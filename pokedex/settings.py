@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    #my apps
+    #my appst
     'pokedexapp',
 
     'django.contrib.admin',
