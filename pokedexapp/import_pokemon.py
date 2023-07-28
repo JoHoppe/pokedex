@@ -19,3 +19,4 @@ def import_pokemon():
             else:
                 pokemon.type = row['type_id']
             pokemon.save()
+            #TODO: types as list

@@ -1,0 +1,19 @@
+{% extends "pokedexapp/base.html" %}
+
+{% block content %}
+
+<h1>Pokedex</h1>
+<ul>
+    {% for pokemon in pokemons %}
+    <li>
+        {{ pokemon.id }}: {{ pokemon.name }}
+        {% if pokemon.sprite.image_data_base64 %}
+        <img src="data:image/png;base64,{{ pokemon.sprite.image_data_base64 }}">
+        {% else %}
+        <p>No sprite available.</p>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

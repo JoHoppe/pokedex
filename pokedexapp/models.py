@@ -16,5 +16,6 @@ class Pokemon(models.Model):
         return self.id
 
 class Sprite(models.Model):
+    #we use sqlite blob to save the pngs, therefore we need the image to be a binary
     pokemon = models.OneToOneField(Pokemon, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="pokemon_sprites")
+    image = models.BinaryField()
