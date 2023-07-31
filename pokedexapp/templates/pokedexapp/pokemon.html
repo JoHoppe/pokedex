@@ -4,5 +4,7 @@
 <h1>Number {{pokemon.id}}: {{pokemon.name}}</h1>
 
  <img src="data:image/png;base64,{{ pokemon.sprite.image_data_base64 }}">
+<a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id|add:1 %}">Next Pokemon</a>
+<a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id|add:-1 %}">Previous Pokemon</a>
 
 {% endblock content %}

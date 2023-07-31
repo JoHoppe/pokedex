@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect,Http404
 from pokedexapp.models import Pokemon, Sprite
 import base64
 
@@ -33,10 +34,16 @@ def show_pokemon(request, *ids):
     return render(request, "pokedexapp/index.html", context)
 
 def show_one_pokemon(request,id):
-    pokemon=Pokemon.objects.get(id=id)
-    image_data_base64 = base64.b64encode(pokemon.sprite.image).decode('utf-8')
-    pokemon.sprite.image_data_base64 = image_data_base64
+    try:
+        pokemon=Pokemon.objects.get(id=id)
+        image_data_base64 = base64.b64encode(pokemon.sprite.image).decode('utf-8')
+        pokemon.sprite.image_data_base64 = image_data_base64
 
 
-    context = {"pokemon": pokemon}
-    return render(request, "pokedexapp/pokemon.html", context)
+        context = {"pokemon": pokemon}
+        return render(request, "pokedexapp/pokemon.html", context)
+    except (TypeError, Pokemon.DoesNotExist) as e:
+        return render(request, "pokedexapp/404.html")
+
+def raise_404(request):
+    return render(request,"pokedexapp/404.html")

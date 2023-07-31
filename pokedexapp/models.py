@@ -19,3 +19,8 @@ class Sprite(models.Model):
     #we use sqlite blob to save the pngs, therefore we need the image to be a binary
     pokemon = models.OneToOneField(Pokemon, on_delete=models.CASCADE)
     image = models.BinaryField()
+
+class Utils(models.Model):
+
+    #place for all utilities we might need, like mssinngno sprite
+    image = models.BinaryField(null=True)
