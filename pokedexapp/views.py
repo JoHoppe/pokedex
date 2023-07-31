@@ -24,4 +24,19 @@ def show_all_pokemon(request):
 
 def show_pokemon(request, *ids):
     pokemons = Pokemon.objects.get(*ids)
-    return pokemons
+    for pokemon in pokemons:
+        image_data_base64 = base64.b64encode(pokemon.sprite.image).decode('utf-8')
+        pokemon.sprite.image_data_base64 = image_data_base64
+
+
+    context = {"pokemons": pokemons}
+    return render(request, "pokedexapp/index.html", context)
+
+def show_one_pokemon(request,id):
+    pokemon=Pokemon.objects.get(id=id)
+    image_data_base64 = base64.b64encode(pokemon.sprite.image).decode('utf-8')
+    pokemon.sprite.image_data_base64 = image_data_base64
+
+
+    context = {"pokemon": pokemon}
+    return render(request, "pokedexapp/pokemon.html", context)

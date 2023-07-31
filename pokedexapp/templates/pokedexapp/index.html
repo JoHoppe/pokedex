@@ -5,13 +5,16 @@
 <h1>Pokedex</h1>
 <ul>
     {% for pokemon in pokemons %}
+
     <li>
+        <a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id %}">
         {{ pokemon.id }}: {{ pokemon.name }}
         {% if pokemon.sprite.image_data_base64 %}
         <img src="data:image/png;base64,{{ pokemon.sprite.image_data_base64 }}">
         {% else %}
         <p>No sprite available.</p>
         {% endif %}
+            </a>
     </li>
     {% endfor %}
 </ul>
