@@ -1,8 +1,12 @@
+<!DOCTYPE html>
+<html>
 {% extends "pokedexapp/base.html" %}
 
 {% block content %}
+<section class="section">
+    <div class="container">
+        <h1>Pokedex</h1>
 
-<h1>Pokedex</h1>
 <ul>
     {% for pokemon in pokemons %}
 
@@ -18,5 +22,8 @@
     </li>
     {% endfor %}
 </ul>
+</div>
+</section>
 
 {% endblock %}
+</html>

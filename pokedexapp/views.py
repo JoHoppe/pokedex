@@ -28,7 +28,8 @@ def show_one_pokemon(request,id):
         pokemon=Pokemon.objects.get(id=id)
         image_data_base64 = base64.b64encode(pokemon.sprite.image).decode('utf-8')
         pokemon.sprite.image_data_base64 = image_data_base64
-        str_types=get_str_types(pokemon.get_type())
+        (str_types)=get_str_types(pokemon.get_type())
+        str_types=list(str_types)
         print(str_types,pokemon.get_type())
 
         if id>1 :
@@ -81,4 +82,6 @@ def search(request):
         else:
             return render(request,"pokedexapp/404.html")
 
+def raise_404(request):
+    return render(request, "pokedexapp/404.html")
 

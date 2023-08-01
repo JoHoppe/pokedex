@@ -1,15 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Other meta tags, title, etc. -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+    <div class="notification is-danger">
+        <p>
+        <ul>
+            <li><a href="{% url 'pokedexapp:index'%}">Home</a></li>
+            <li>
+                Search
+                <form action="{% url 'pokedexapp:search' %}" method="GET">
+                    <input name="q" type="text" placeholder="Search...">
+                </form>
+            </li>
 
-<p>
-    <ul>
-        <li><a href="{% url 'pokedexapp:index'%}">Home</a></li>
-        <li>
-            Search <form action="{% url 'pokedexapp:search' %}" method="GET">
-            <input name="q" type="text" placeholder="Search...">
-            </form>
-        </li>
+        </ul>
+        </p>
+    </div>
 
-    </ul>
-
-
-</p>
 {%block content %}{% endblock content%}
+</html>

@@ -1,8 +1,13 @@
+<!DOCTYPE html>
+<html>
+
 {% extends "pokedexapp/base.html" %}
 {%block content %}
 
+<div class="block">
 <h1>Number {{pokemon.id}}: {{pokemon.name}}</h1>
-<h2>Type:{{str_types}}</h2>
+ <span class="tag is-info">{{str_types.0}}</span>
+ <span class="tag is-attention">{% if str_types.1%}{{str_types.1}}{%endif%}</span>
 
  <img src="data:image/png;base64,{{ pokemon.sprite.image_data_base64 }}">
 <a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id|add:1 %}">
@@ -15,5 +20,7 @@
  {% if prev_pokemon.sprite.image_data_base64 %}<img src="data:image/png;base64,{{ prev_pokemon.sprite.image_data_base64 }}">
  {%endif%}
 </a>
+</div>
 
 {% endblock content %}
+</html>
