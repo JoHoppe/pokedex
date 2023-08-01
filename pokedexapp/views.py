@@ -23,16 +23,6 @@ def show_all_pokemon(request):
     return pokemons
 
 
-def show_pokemon(request, *ids):
-    pokemons = Pokemon.objects.get(*ids)
-    for pokemon in pokemons:
-        image_data_base64 = base64.b64encode(pokemon.sprite.image).decode('utf-8')
-        pokemon.sprite.image_data_base64 = image_data_base64
-
-
-    context = {"pokemons": pokemons}
-    return render(request, "pokedexapp/index.html", context)
-
 def show_one_pokemon(request,id):
     try:
         pokemon=Pokemon.objects.get(id=id)
@@ -61,15 +51,13 @@ def show_one_pokemon(request,id):
     except (TypeError, Pokemon.DoesNotExist) as e:
         return render(request, "pokedexapp/404.html")
 
-def raise_404(request):
-    return render(request,"pokedexapp/404.html")
-
 def search(request):
     query=request.GET.get("q")
-    #check if input was a number
+    #check if input was a number,
     try:
         query=int(query)
         q_pokemons = Pokemon.objects.filter(id__contains=query )
+        #convert query into a list and iterate over it
         pokemons=list(q_pokemons)
         for pokemon in pokemons:
             image_data_base64 = base64.b64encode(pokemon.sprite.image).decode('utf-8')
@@ -81,6 +69,7 @@ def search(request):
     except ValueError:
         q_pokemons=Pokemon.objects.filter(name__contains=query)
         pokemons = list(q_pokemons)
+        #if there results we return them, else we render 404page
         if len(pokemons)>=1:
             for pokemon in pokemons:
                 image_data_base64 = base64.b64encode(pokemon.sprite.image).decode('utf-8')
