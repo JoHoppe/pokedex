@@ -2,9 +2,18 @@
 {%block content %}
 
 <h1>Number {{pokemon.id}}: {{pokemon.name}}</h1>
+<h2>Type:{{str_types}}</h2>
 
  <img src="data:image/png;base64,{{ pokemon.sprite.image_data_base64 }}">
-<a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id|add:1 %}">Next Pokemon</a>
-<a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id|add:-1 %}">Previous Pokemon</a>
+<a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id|add:1 %}">
+ Next Pokemon: {{next_pokemon.name}}
+ {% if next_pokemon.sprite.image_data_base64 %} <img src="data:image/png;base64,{{ next_pokemon.sprite.image_data_base64 }}">
+ {%endif%}
+</a>
+<a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id|add:-1 %}">
+ Previous Pokemon: {{prev_pokemon.name}}
+ {% if prev_pokemon.sprite.image_data_base64 %}<img src="data:image/png;base64,{{ prev_pokemon.sprite.image_data_base64 }}">
+ {%endif%}
+</a>
 
 {% endblock content %}

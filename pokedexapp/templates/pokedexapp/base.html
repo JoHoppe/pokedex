@@ -2,6 +2,11 @@
 <p>
     <ul>
         <li><a href="{% url 'pokedexapp:index'%}">Home</a></li>
+        <li>
+            Search <form action="{% url 'pokedexapp:search' %}" method="GET">
+            <input name="q" type="text" placeholder="Search...">
+            </form>
+        </li>
 
     </ul>
 
