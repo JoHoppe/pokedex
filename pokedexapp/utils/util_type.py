@@ -1,4 +1,4 @@
-def get_str_types(pokemon_types):
+def get_str_type(pokemon_type):
     type_mapping = {
         '1': 'normal',
         '2': 'fighting',
@@ -20,5 +20,5 @@ def get_str_types(pokemon_types):
         '18': 'fairy',
     }
 
-    type_names = [type_mapping.get(t_id, None) for t_id in pokemon_types]
+    type_names = [type_mapping.get(t_id, None) for t_id in pokemon_type]
     return [t_name for t_name in type_names if t_name is not None]

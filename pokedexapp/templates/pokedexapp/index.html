@@ -1,29 +1,40 @@
-<!DOCTYPE html>
-<html>
 {% extends "pokedexapp/base.html" %}
 
 {% block content %}
 <section class="section">
-    <div class="container">
-        <h1>Pokedex</h1>
-
-<ul>
-    {% for pokemon in pokemons %}
-
-    <li>
-        <a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id %}">
-        {{ pokemon.id }}: {{ pokemon.name }}
-        {% if pokemon.sprite.image_data_base64 %}
-        <img src="data:image/png;base64,{{ pokemon.sprite.image_data_base64 }}">
-        {% else %}
-        <p>No sprite available.</p>
-        {% endif %}
-            </a>
-    </li>
-    {% endfor %}
-</ul>
-</div>
+    <div class="nav">
+        <h1 class="title">Pokedex</h1>
+    </div>
 </section>
+<div class="columns is-multiline has-background-grey">
+    {% for pokemon in pokemons %}
+    <div class="column is-4">
+        <div class="card">
+            <a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id %}" class="card-content">
+                <div class="card-content">
+                    <!-- Pokémon Image -->
+                    {% if pokemon.sprite and pokemon.sprite.image_data_base64 %}
+                    <img src="data:image/png;base64,{{ pokemon.sprite.image_data_base64 }}" alt="Pokemon Sprite">
+                    {% else %}
+                    <p>No sprite available.</p>
+                    {% endif %}
 
+                    <!-- Pokémon Details -->
+                    <p class="subtitle">{{ pokemon.id }}: {{ pokemon.name }}</p>
+                </div>
+            </a>
+            <!-- Pokémon Types -->
+            <div class="card-footer">
+                <div class="tags">
+                    {% for css_type in pokemon.type_name %}
+                        <span class="tag is-rounded type-badge type-{{ css_type|lower }}">
+                            {{ css_type }}
+                        </span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}
-</html>

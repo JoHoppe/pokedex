@@ -9,7 +9,7 @@ def import_pokemon():
             pokemon = Pokemon(name=row['identifier'])  # Don't pass the 'id' here.
             pokemon.save()
 
-    filepath_types = r"/csv_files/pokemon_types.csv"
+    filepath_types = r"/csv_files/pokemon_type.csv"
     with open(filepath_types, 'r') as csv_file:
         reader = csv.DictReader(csv_file)
         for row in reader:

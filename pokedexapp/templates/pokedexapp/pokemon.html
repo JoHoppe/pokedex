@@ -6,8 +6,8 @@
 
 <div class="block">
 <h1>Number {{pokemon.id}}: {{pokemon.name}}</h1>
- <span class="tag is-info">{{str_types.0}}</span>
- <span class="tag is-attention">{% if str_types.1%}{{str_types.1}}{%endif%}</span>
+ <span class="tag is-info">{{pokemon.str_type.0}}</span>
+ <span class="tag is-attention">{% if pokemon.str_type.1%}{{pokemon.str_type.1}}{%endif%}</span>
 
  <img src="data:image/png;base64,{{ pokemon.sprite.image_data_base64 }}">
 <a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id|add:1 %}">

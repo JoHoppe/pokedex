@@ -1,0 +1,101 @@
+/* CSS classes for type badges */
+.type-badge {
+  margin-right: 5px;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Styles for different types */
+.type-badge.type-normal {
+  background-color: #A8A77A; /* Normal */
+  color: white;
+}
+
+.type-badge.type-fighting {
+  background-color: #C22E28; /* Fighting */
+  color: white;
+}
+
+.type-badge.type-flying {
+  background-color: #A98FF3; /* Flying */
+  color: white;
+}
+
+.type-badge.type-poison {
+  background-color: #A33EA1; /* Poison */
+  color: white;
+}
+
+.type-badge.type-ground {
+  background-color: #E2BF65; /* Ground */
+  color: black;
+}
+
+.type-badge.type-rock {
+  background-color: #B6A136; /* Rock */
+  color: white;
+}
+
+.type-badge.type-bug {
+  background-color: #A6B91A; /* Bug */
+  color: black;
+}
+
+.type-badge.type-ghost {
+  background-color: #735797; /* Ghost */
+  color: white;
+}
+
+.type-badge.type-steel {
+  background-color: #B7B7CE; /* Steel */
+  color: black;
+}
+
+.type-badge.type-fire {
+  background-color: #EE8130; /* Fire */
+  color: white;
+}
+
+.type-badge.type-water {
+  background-color: #6390F0; /* Water */
+  color: white;
+}
+
+.type-badge.type-grass {
+  background-color: #7AC74C; /* Grass */
+  color: white;
+}
+
+.type-badge.type-electric {
+  background-color: #F7D02C; /* Electric */
+  color: black;
+}
+
+.type-badge.type-psychic {
+  background-color: #F95587; /* Psychic */
+  color: white;
+}
+
+.type-badge.type-ice {
+  background-color: #96D9D6; /* Ice */
+  color: black;
+}
+
+.type-badge.type-dragon {
+  background-color: #6F35FC; /* Dragon */
+  color: white;
+}
+
+.type-badge.type-dark {
+  background-color: #705746; /* Dark */
+  color: white;
+}
+
+.type-badge.type-fairy {
+  background-color: #D685AD; /* Fairy */
+  color: white;
+}
