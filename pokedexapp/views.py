@@ -1,8 +1,10 @@
-from django.shortcuts import render,get_object_or_404
-from django.http import HttpResponseRedirect,Http404
-from pokedexapp.models import Pokemon, Sprite
 import base64
-from . utils.util_type import get_str_type
+
+from django.shortcuts import render, get_object_or_404
+
+from pokedexapp.models import Pokemon
+from .utils.util_type import get_str_type
+
 
 # Create your views here.
 def index(request):
@@ -10,7 +12,7 @@ def index(request):
 
     # Encode the image data of sprites to base64
     for pokemon in pokemons:
-        pokemon.type_name= get_str_type(pokemon.get_type())
+        pokemon.type_name = get_str_type(pokemon.get_type())
         pokemon.type_name = list(pokemon.type_name)
         if pokemon.sprite and pokemon.sprite.image:
             image_data_base64 = base64.b64encode(pokemon.sprite.image).decode('utf-8')
@@ -23,6 +25,7 @@ def index(request):
 def show_all_pokemon(request):
     pokemons = Pokemon.objects.all().order_by('id')
     return pokemons
+
 
 def show_one_pokemon(request, id):
     # Ensure the ID is a positive integer
@@ -73,7 +76,6 @@ def show_one_pokemon(request, id):
     return render(request, "pokedexapp/pokemon.html", context)
 
 
-
 def search(request):
     query = request.GET.get("q")
     # Check if input was a number,
@@ -102,6 +104,7 @@ def search(request):
             return render(request, "pokedexapp/search.html", context)
         else:
             return render(request, "pokedexapp/404.html")
+
 
 def raise_404(request):
     return render(request, "pokedexapp/404.html")

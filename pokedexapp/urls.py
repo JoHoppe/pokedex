@@ -10,4 +10,5 @@ urlpatterns=[
     #path for 404
     path('pokemon/404',views.raise_404,name="raise_404"),
     path('pokemon/search',views.search,name="search"),
+
 ]
