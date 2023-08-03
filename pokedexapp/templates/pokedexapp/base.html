@@ -3,25 +3,39 @@
 <head>
     <!-- Other meta tags, title, etc. -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/my_styles.css' %}">
+    <link href="{% static 'css/my_styles.css' %}" rel="stylesheet">
 </head>
-    <div class="notification is-danger">
-        <p>
-        <ul>
-            <li><a href="{% url 'pokedexapp:index'%}">Home</a></li>
-            <li>
-                Search
-                <form action="{% url 'pokedexapp:search' %}" method="GET">
-                    <input name="q" type="text" placeholder="Search...">
-                </form>
-            </li>
-
-        </ul>
-        </p>
+<body class="has-navbar-fixed-top">
+</body>
+<nav class="navbar is-fixed-top">
+    <div class="navbar-item is-danger">
+        <a href="{% url 'pokedexapp:index'%}"><button class="button is-danger" type="submit">Home</button></a>
     </div>
-
+    <div class="navbar-item">
+        <form action="{% url 'pokedexapp:search' %}" method="GET">
+            <div class="field has-addons">
+                <div class="control">
+                    <input class="input is-danger" name="q" placeholder="Search by name or id" type="text">
+                </div>
+                <div class="control">
+                    <button class="button is-danger" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="navbar-end">
+        <div class="navbar-item">
+            <div class="control">
+                <button class="button is-grey" type="get">Login</button>
+            </div>
+        </div>
+        <div class="navbar-item">
+            <button class="button is-grey" type="get">Register</button>
+        </div>
+    </div>
+</nav>
 {%block content %}{% endblock content%}
 </html>

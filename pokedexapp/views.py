@@ -40,22 +40,30 @@ def show_one_pokemon(request, id):
 
     # Get the current and adjacent Pokemon
     pokemon = get_object_or_404(Pokemon, id=id)
-    prev_pokemon = get_object_or_404(Pokemon, id=id - 1) if id > 1 else None
-    next_pokemon = get_object_or_404(Pokemon, id=id + 1) if id < total_pokemons else None
+
+    prev_id = id - 1
+    next_id = id + 1
+
+    # If the previous ID is 0, set it to the ID of the last Pokemon
+    if prev_id == 0:
+        prev_id = total_pokemons
+
+    # If the next ID exceeds the total number of Pokemon, set it to the first Pokemon
+    if next_id > total_pokemons:
+        next_id = 1
+
+    prev_pokemon = get_object_or_404(Pokemon, id=prev_id)
+    next_pokemon = get_object_or_404(Pokemon, id=next_id)
 
     # Encode the image data of the sprite to base64
     image_data_base64 = base64.b64encode(pokemon.sprite.image).decode('utf-8')
     pokemon.sprite.image_data_base64 = image_data_base64
 
-    if prev_pokemon:
-        prev_pokemon.sprite.image_data_base64 = base64.b64encode(prev_pokemon.sprite.image).decode('utf-8')
-    if next_pokemon:
-        next_pokemon.sprite.image_data_base64 = base64.b64encode(next_pokemon.sprite.image).decode('utf-8')
+    prev_pokemon.sprite.image_data_base64 = base64.b64encode(prev_pokemon.sprite.image).decode('utf-8')
+    next_pokemon.sprite.image_data_base64 = base64.b64encode(next_pokemon.sprite.image).decode('utf-8')
 
     pokemon.type_name = get_str_type(pokemon.get_type())
     pokemon.type_name = list(pokemon.type_name)
-
-
 
     context = {
         "pokemon": pokemon,
@@ -63,6 +71,7 @@ def show_one_pokemon(request, id):
         "prev_pokemon": prev_pokemon,
     }
     return render(request, "pokedexapp/pokemon.html", context)
+
 
 
 def search(request):

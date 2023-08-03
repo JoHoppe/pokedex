@@ -1,12 +1,16 @@
 /* CSS classes for type badges */
 .type-badge {
+  width: 100px; /* Adjust the width to your preference */
+  height: 40px;
   margin-right: 5px;
   margin-bottom: 5px;
   padding: 5px 10px;
   border-radius: 5px;
-  font-size: 40px;
+  font-size: 50px;
   font-weight: bold;
   cursor: pointer;
+  text-transform: uppercase;
+  text-align: center
 }
 
 /* Styles for different types */
@@ -100,6 +104,65 @@
   color: white;
 }
 
-.title{
-is-centered
+.poke_title {
+  font-size: 1.5rem;
+  line-height: 1.2;
+  text-transform: capitalize;
+  margin: 0;
+}
+.np_poke-title{
+  font-size: 1rem;
+  line-height: 1;
+  text-transform: capitalize;
+  margin: 0;
+}
+
+/* Set the size of the .card-image container */
+.card-image {
+  width: 100%;
+  height: 100%; /* Set the desired height for the cards */
+  object-fit: cover;
+}
+
+/* Style the .card container */
+.card {
+  border-radius: 1.25rem;
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Style the card-content link */
+.card-content {
+  text-decoration: none;
+  color: black;
+  margin-left: 1.25rem; /* Adjust this value to align the content with the rounded edge */
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Set the size of the #id and type elements */
+.card-content p {
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the type badges */
+.card-content .tags {
+  margin-top: 0.5rem;
+}
+
+.tag {
+  margin: 0.2rem;
+  font-size: 1.5rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 1.5rem;
+  font-weight: bold;
+}
+
+
+.navbar.is-fixed-top{
+ padding-left:1rem;
 }

@@ -1,31 +1,42 @@
 <!DOCTYPE html>
-<html>
+<div>
 
 {% extends "pokedexapp/base.html" %}
 {% block content %}
-<div class="column is-5">
-<div class="card">
-    <h1>Number {{ pokemon.id }}: {{ pokemon.name }}</h1>
-    <div class="tags">
-        {% for css_type in pokemon.type_name %}
-        <span class="tag is-rounded type-badge type-{{ css_type|lower }}">
-            {{ css_type }}
-        </span>
-        {% endfor %}
-    </div>
-    </div>
+<div class="column is-6">
+        <div class="card">
+            <a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id %}" class="card-content">
+                <!-- Pokémon Details -->
+                <p class="poke_title">{{ pokemon.id }}: {{ pokemon.name }}</p>
+                <!-- Pokémon Types -->
+                <div class="card-footer">
+                    <div class="tags">
+                        {% for css_type in pokemon.type_name %}
+                        <span class="tag is-rounded type-badge type-{{ css_type|lower }}">
+                            {{ css_type }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                </div>
 
-    <div class="card-image">
-        <img src="data:image/png;base64,{{ pokemon.sprite.image_data_base64 }}">
+                <div class="card-image">
+                    <!-- Pokémon Image -->
+                    {% if pokemon.sprite and pokemon.sprite.image_data_base64 %}
+                    <img src="data:image/png;base64,{{ pokemon.sprite.image_data_base64 }}" alt="Pokemon Sprite">
+                    {% else %}
+                    <p>No sprite available.</p>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
     </div>
 </div>
 
-
 <div class="columns">
-    <div class="column is-2">
+    <div class="column is-3">
         <div class="card">
-            <a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id|add:-1 %}">
-                <div class="card-title">
+            <a href="{% url 'pokedexapp:show_one_pokemon' prev_pokemon.id%}">
+                <div class="np_poke-title">
                     Previous Pokemon: {{ prev_pokemon.name }}
                 </div>
                 <div class="card-image">
@@ -36,10 +47,10 @@
             </a>
         </div>
     </div>
-    <div class="column is-2">
+    <div class="column is-3">
         <div class="card">
-            <a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id|add:1 %}">
-                <div class="card-title">
+            <a href="{% url 'pokedexapp:show_one_pokemon' next_pokemon.id %}">
+                <div class="np_poke-title">
                     Next Pokemon: {{ next_pokemon.name }}
                 </div>
                 <div class="card-image">
