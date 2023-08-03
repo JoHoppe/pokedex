@@ -11,20 +11,9 @@
     <div class="column is-4">
         <div class="card">
             <a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id %}" class="card-content">
-                <div class="card-content">
-                    <!-- Pokémon Image -->
-                    {% if pokemon.sprite and pokemon.sprite.image_data_base64 %}
-                    <img src="data:image/png;base64,{{ pokemon.sprite.image_data_base64 }}" alt="Pokemon Sprite">
-                    {% else %}
-                    <p>No sprite available.</p>
-                    {% endif %}
-
-                    <!-- Pokémon Details -->
-                    <p class="subtitle">{{ pokemon.id }}: {{ pokemon.name }}</p>
-                </div>
-            </a>
-            <!-- Pokémon Types -->
-            <div class="card-footer">
+                <!-- Pokémon Details -->
+                    <p class="title">{{ pokemon.id }}: {{ pokemon.name }}</p>
+                <!-- Pokémon Types --><div class="card-footer">
                 <div class="tags">
                     {% for css_type in pokemon.type_name %}
                         <span class="tag is-rounded type-badge type-{{ css_type|lower }}">
@@ -32,7 +21,21 @@
                         </span>
                     {% endfor %}
                 </div>
-            </div>
+                </div>
+
+                <div class="card-image">
+                    <!-- Pokémon Image -->
+                    {% if pokemon.sprite and pokemon.sprite.image_data_base64 %}
+                    <img src="data:image/png;base64,{{ pokemon.sprite.image_data_base64 }}" alt="Pokemon Sprite">
+                    {% else %}
+                    <p>No sprite available.</p>
+                    {% endif %}
+
+
+                </div>
+                </a>
+
+
         </div>
     </div>
     {% endfor %}
