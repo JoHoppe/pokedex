@@ -9,12 +9,16 @@
 
 <div class="column is-4">
 
-     <form action="{% url 'users:login' %}" method="POST">
+    <form action="{% url 'users:login' %}" method="POST">
         {% csrf_token %}
-        {{ form.email.label_tag }} {{ form.email }}
-        {{ form.password.label_tag }} {{ form.password }}
+        <div>
+            {{ form.email }}
+        </div>
+        <div>
+            {{ form.password }}
+        </div>
         <button type="submit">Login</button>
     </form>
-    </div>
+</div>
 {% endblock content %}
 </html>

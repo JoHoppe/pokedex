@@ -12,11 +12,11 @@ from .forms.log_reg_form import LoginForm, RegisterForm
 
 def login(request):
     if request.method == 'POST':
-        form = LoginForm(request, data=request.POST)
+        form = LoginForm(request=request, data=request.POST)  # Pass 'request' as keyword argument
         if form.is_valid():
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
-            user = authenticate(email=email, password=password)
+            user = authenticate(request=request, email=email, password=password)  # Pass 'request' as keyword argument
             if user is not None:
                 login(request, user)
                 return redirect('pokedexapp:index')  # Redirect to your desired page
