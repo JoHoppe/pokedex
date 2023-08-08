@@ -9,39 +9,52 @@
     <link href="{% static 'css/my_styles.css' %}" rel="stylesheet">
 </head>
 <body class="has-navbar-fixed-top">
-</body>
-<nav class="navbar is-fixed-top">
-    <div class="navbar-item is-danger">
-        <a href="{% url 'pokedexapp:index'%}">
-            <button class="button is-danger" type="submit">Home</button>
-        </a>
-    </div>
-    <div class="navbar-item">
-        <form action="{% url 'pokedexapp:search' %}" method="GET">
-            <div class="field has-addons">
-                <div class="control">
-                    <input class="input is-danger" name="q" placeholder="Search by name or id" type="text">
-                </div>
-                <div class="control">
-                    <button class="button is-danger" type="submit">Search</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="navbar-end">
-        <div class="navbar-item">
-            <div class="control">
-                <a href="{% url 'users:login' %}">
-                    <button class="button is-grey" type="get">Login</button>
-                </a>
-            </div>
-        </div>
-        <div class="navbar-item">
-            <a href="{%url 'users:register' %}">
-                <button class="button is-grey" type="get">Register</button>
+    <nav class="navbar is-fixed-top">
+        <div class="navbar-item is-danger">
+            <a href="{% url 'pokedexapp:index'%}">
+                <button class="button is-danger" type="submit">Home</button>
             </a>
         </div>
-    </div>
-</nav>
-{%block content %}{% endblock content%}
+        <div class="navbar-item">
+            <form action="{% url 'pokedexapp:search' %}" method="GET">
+                <div class="field has-addons">
+                    <div class="control">
+                        <input class="input is-danger" name="q" placeholder="Search by name or id" type="text">
+                    </div>
+                    <div class="control">
+                        <button class="button is-danger" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="navbar-end">
+            {% if user.is_authenticated %}
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    {{ user.username }}
+                </a>
+                <div class="navbar-dropdown">
+                    <a href="{% url 'users:my_profile' %}" class="navbar-item">My Profile</a>
+                    <hr class="navbar-divider">
+                    <a href="{% url 'users:logout' %}" class="navbar-item">Logout</a>
+                </div>
+            </div>
+            {% else %}
+            <div class="navbar-item">
+                <div class="control">
+                    <a href="{% url 'users:login' %}">
+                        <button class="button is-grey" type="get">Login</button>
+                    </a>
+                </div>
+            </div>
+            <div class="navbar-item">
+                <a href="{%url 'users:register' %}">
+                    <button class="button is-grey" type="get">Register</button>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+    {% block content %}{% endblock content %}
+</body>
 </html>

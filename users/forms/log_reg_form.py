@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate
+from django.contrib.auth.password_validation import validate_password
 
 
 class RegisterForm(forms.Form):
@@ -25,18 +26,21 @@ class RegisterForm(forms.Form):
         return cleaned_deta
 
 
-from django import forms
-from django.contrib.auth.password_validation import validate_password
-
 # a bit of a useless form, might be usefull later
 class LoginForm(forms.Form):
-    email = forms.CharField(label="email")
-    password = forms.CharField(label="password", widget=forms.PasswordInput)
+    username_or_email = forms.CharField(label="Username or Email")
+    password = forms.CharField(label="Password", widget=forms.PasswordInput)
 
     def clean(self):
         cleaned_data = super().clean()
+        username_or_email = cleaned_data.get('username_or_email')
         password = cleaned_data.get('password')
-        email = cleaned_data.get('email')
 
+        user = authenticate(request=None, username=username_or_email, password=password)  # Authenticate with username
+        if user is None:
+            user = authenticate(request=None, email=username_or_email, password=password)  # Authenticate with email
+
+        if user is None:
+            raise forms.ValidationError('Invalid credentials')
 
         return cleaned_data

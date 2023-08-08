@@ -2,9 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Register</title>
+    {% extends "pokedexapp/base.html" %}
 </head>
-<body>
+{% block content %}
 
-</body>
+<div class="column is-4">
+
+    <form action="{% url 'users:register' %}" method="POST">
+        {% csrf_token %}
+        <div>
+            Your username
+            {{form.username}}
+        </div>
+        <div>
+            Your Email
+            {{ form.email }}
+        </div>
+        <div>
+            Your password
+            {{ form.password }}
+        </div>
+        <div>
+            Repeat your password
+            {{form.repeat_password}}
+        </div>
+
+        <button type="submit">Register</button>
+    </form>
+</div>
+{% endblock content %}
+</html>
 </html>
