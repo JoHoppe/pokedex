@@ -4,10 +4,10 @@ from django.contrib.auth.password_validation import validate_password
 
 
 class RegisterForm(forms.Form):
-    username = forms.CharField(label="username")
-    email = forms.CharField(label="email")
-    password = forms.CharField(label="password", widget=forms.PasswordInput)
-    repeat_password = forms.CharField(label="repeat_password", widget=forms.PasswordInput)
+    username = forms.CharField(label="username",required=True)
+    email = forms.EmailField(label="email",required=True)
+    password = forms.CharField(label="password", widget=forms.PasswordInput,required=True)
+    repeat_password = forms.CharField(label="repeat_password", widget=forms.PasswordInput,required=True)
 
     # clean get automatically called during the authentication
     # use it to create custom requirements like password strength and check for correct password or valid email
@@ -28,8 +28,8 @@ class RegisterForm(forms.Form):
 
 # a bit of a useless form, might be usefull later
 class LoginForm(forms.Form):
-    username_or_email = forms.CharField(label="Username or Email")
-    password = forms.CharField(label="Password", widget=forms.PasswordInput)
+    username_or_email = forms.CharField(label="Username or Email",required=True)
+    password = forms.CharField(label="Password", widget=forms.PasswordInput,required=True)
 
     def clean(self):
         cleaned_data = super().clean()

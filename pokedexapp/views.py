@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from pokedexapp.models import Pokemon
 from .utils.util_type import get_str_type
 
+from users import views as uviews
 
 # Create your views here.
 def index(request):

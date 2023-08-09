@@ -4,57 +4,109 @@
     <!-- Other meta tags, title, etc. -->
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
+    <!-- Load your CSS and fontawesome links here -->
     <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/8ce67e1d09.js"></script>
     {% load static %}
     <link href="{% static 'css/my_styles.css' %}" rel="stylesheet">
 </head>
 <body class="has-navbar-fixed-top">
-    <nav class="navbar is-fixed-top">
-        <div class="navbar-item is-danger">
-            <a href="{% url 'pokedexapp:index'%}">
-                <button class="button is-danger" type="submit">Home</button>
-            </a>
+<nav class="navbar is-fixed-top">
+    <div class="navbar-item is-danger">
+        <a href="{% url 'pokedexapp:index'%}">
+            <button class="button is-danger" type="submit">Home</button>
+        </a>
+    </div>
+    <div class="navbar-item">
+        <form action="{% url 'pokedexapp:search' %}" method="GET">
+            <div class="field has-addons">
+                <div class="control">
+                    <input class="input is-danger" name="q" placeholder="Search by name or id" type="text">
+                </div>
+                <div class="control">
+                    <button class="button is-danger" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="navbar-end">
+        {% if user.is_authenticated %}
+        <div class="navbar-item has-dropdown -trigger">
+            <button class="button is-grey" onclick="this.parentNode.classList.toggle('is-active')">
+                <span>{{ user.username }}</span>
+                <span class="icon is-small">
+            <i aria-hidden="true" class="fas fa-angle-down"></i>
+        </span>
+            </button>
+            <div class="navbar-dropdown">
+                <a class="navbar-item" href="{% url 'users:my_profile' %}">My Profile</a>
+                <hr class="navbar-divider">
+                <a class="navbar-item" href="{% url 'users:logout' %}">Logout</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="navbar-item">
+            <div class="dropdown">
+                <div class="dropdown-trigger">
+                    <button aria-controls="dropdown-login" aria-haspopup="true" class="button is-grey dropdown-button"
+                            onclick="this.parentNode.parentNode.classList.toggle('is-active')">
+                        <span>Login</span>
+                        <span class="icon is-small">
+                            <i aria-hidden="true" class="fas fa-angle-down"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-login" role="menu">
+                    <div class="dropdown-content">
+                        <div class="dropdown-item">
+                            <form action="{% url 'users:login' %}" method="post">
+                                {% csrf_token %}
+                                {{ log_form.username_or_email.label_tag }}
+                                {{ log_form.username_or_email }}
+                                {{ log_form.password.label_tag }}
+                                {{ log_form.password }}
+                                <button type="submit">Login</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="navbar-item">
-            <form action="{% url 'pokedexapp:search' %}" method="GET">
-                <div class="field has-addons">
-                    <div class="control">
-                        <input class="input is-danger" name="q" placeholder="Search by name or id" type="text">
+            <div class="dropdown">
+                <div class="dropdown-trigger">
+                    <button aria-controls="dropdown-register" aria-haspopup="true"
+                            class="button is-grey dropdown-button"
+                            onclick="this.parentNode.parentNode.classList.toggle('is-active')">
+                        <span>Register</span>
+                        <span class="icon is-small">
+                            <i aria-hidden="true" class="fas fa-angle-down"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-register" role="menu">
+                    <div class="dropdown-content">
+                        <form action="{% url 'users:register' %}" method="post">
+                            {% csrf_token %}
+                            {{ reg_form.username.label_tag }}
+                            {{ reg_form.username }}
+                            {{ reg_form.email.label_tag }}
+                            {{ reg_form.email }}
+                            {{ reg_form.password.label_tag }}
+                            {{ reg_form.password }}
+                            {{ reg_form.repeat_password.label_tag }}
+                            {{ reg_form.repeat_password }}
+                            <button type="submit">Register</button>
+                        </form>
                     </div>
-                    <div class="control">
-                        <button class="button is-danger" type="submit">Search</button>
-                    </div>
                 </div>
-            </form>
+            </div>
         </div>
-        <div class="navbar-end">
-            {% if user.is_authenticated %}
-            <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
-                    {{ user.username }}
-                </a>
-                <div class="navbar-dropdown">
-                    <a href="{% url 'users:my_profile' %}" class="navbar-item">My Profile</a>
-                    <hr class="navbar-divider">
-                    <a href="{% url 'users:logout' %}" class="navbar-item">Logout</a>
-                </div>
-            </div>
-            {% else %}
-            <div class="navbar-item">
-                <div class="control">
-                    <a href="{% url 'users:login' %}">
-                        <button class="button is-grey" type="get">Login</button>
-                    </a>
-                </div>
-            </div>
-            <div class="navbar-item">
-                <a href="{%url 'users:register' %}">
-                    <button class="button is-grey" type="get">Register</button>
-                </a>
-            </div>
-            {% endif %}
-        </div>
-    </nav>
-    {% block content %}{% endblock content %}
+        {% endif %}
+    </div>
+</nav>
+
+{% block content %}{% endblock content %}
+
 </body>
 </html>

@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import LogoutView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-
 from .forms.log_reg_form import LoginForm, RegisterForm
 
 
@@ -32,7 +31,7 @@ def custom_login(request):
     else:
         form = LoginForm()
 
-    return render(request, 'users/login.html', {'form': form})
+    return render(request, {'form': form})
 
 
 def custom_register(request):
@@ -55,7 +54,7 @@ def custom_register(request):
 
 
 class CustomLogoutView(LogoutView):
-    next_page = reverse_lazy('users:login')  # Redirect to the login page
+    next_page = reverse_lazy('pokedexapp:index')  # Redirect to the login page
 
 
 @login_required
