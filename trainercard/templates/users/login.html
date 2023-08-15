@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% extends "pokedexapp/base.html" %}
+</head>
+{% block content %}
+
+<div class="column is-4">
+
+    <form action="{% url 'users:login' %}" method="POST">
+        {% csrf_token %}
+        <div>
+
+            {{ form.username_or_email }}
+            {% if form.errors.username_or_email %}
+            <ul class="errorlist">
+                {% for error in form.errors.username_or_email %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.password }}
+            {% if form.errors.password %}
+            <ul class="errorlist">
+                {% for error in form.errors.password %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <button type="submit">Login</button>
+    </form>
+</div>
+{% endblock content %}
+</html>

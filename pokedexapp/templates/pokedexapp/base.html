@@ -13,8 +13,8 @@
 <body class="has-navbar-fixed-top">
 <nav class="navbar is-fixed-top">
     <div class="navbar-item is-danger">
-        <a href="{% url 'pokedexapp:index'%}">
-            <button class="button is-danger" type="submit">Home</button>
+        <a href="{% url 'pokedexapp:index' %}">
+            <button class="button is-danger" type="button">Home</button>
         </a>
     </div>
     <div class="navbar-item">
@@ -35,8 +35,8 @@
             <button class="button is-grey" onclick="this.parentNode.classList.toggle('is-active')">
                 <span>{{ user.username }}</span>
                 <span class="icon is-small">
-            <i aria-hidden="true" class="fas fa-angle-down"></i>
-        </span>
+                    <i aria-hidden="true" class="fas fa-angle-down"></i>
+                </span>
             </button>
             <div class="navbar-dropdown">
                 <a class="navbar-item" href="{% url 'users:my_profile' %}">My Profile</a>
@@ -73,33 +73,10 @@
             </div>
         </div>
         <div class="navbar-item">
-            <div class="dropdown">
-                <div class="dropdown-trigger">
-                    <button aria-controls="dropdown-register" aria-haspopup="true"
-                            class="button is-grey dropdown-button"
-                            onclick="this.parentNode.parentNode.classList.toggle('is-active')">
-                        <span>Register</span>
-                        <span class="icon is-small">
-                            <i aria-hidden="true" class="fas fa-angle-down"></i>
-                        </span>
-                    </button>
-                </div>
-                <div class="dropdown-menu" id="dropdown-register" role="menu">
-                    <div class="dropdown-content">
-                        <form action="{% url 'users:register' %}" method="post">
-                            {% csrf_token %}
-                            {{ reg_form.username.label_tag }}
-                            {{ reg_form.username }}
-                            {{ reg_form.email.label_tag }}
-                            {{ reg_form.email }}
-                            {{ reg_form.password.label_tag }}
-                            {{ reg_form.password }}
-                            {{ reg_form.repeat_password.label_tag }}
-                            {{ reg_form.repeat_password }}
-                            <button type="submit">Register</button>
-                        </form>
-                    </div>
-                </div>
+            <div class="register-menu" id="register" role="menu">
+                <a href="{% url 'users:register' %}">
+                    <button class="button"type="button">Register</button>
+                </a>
             </div>
         </div>
         {% endif %}

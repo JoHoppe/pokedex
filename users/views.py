@@ -1,11 +1,16 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-# we use djangos built in user model, has everythin we need
 from django.contrib.auth.models import User
+# we use djangos built in user model, has everythin we need
 from django.contrib.auth.views import LogoutView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from .forms.log_reg_form import LoginForm, RegisterForm
+from trainercard.models import TrainerCard
+from pokedexapp.models import Pokemon
+import base64
+
+
 
 
 # Create your views here.
@@ -28,10 +33,13 @@ def custom_login(request):
             if user is not None:
                 login(request, user)
                 return redirect('pokedexapp:index')  # Redirect to your desired page
+        else:
+            # Display form errors to the user
+            print(form.errors)
     else:
         form = LoginForm()
 
-    return render(request, {'form': form})
+    return render(request,"", {'form': form})
 
 
 def custom_register(request):
@@ -44,9 +52,10 @@ def custom_register(request):
 
             # Create the user
             user = User.objects.create_user(username=username, email=email, password=password)
+            trainercard=TrainerCard.objects.create(user=user)
 
             # Redirect to a success page or custom_login page
-            return redirect('users:login')  # Replace with the appropriate URL
+            return redirect('pokedexapp:index')  # Replace with the appropriate URL
     else:
         form = RegisterForm()
 
@@ -59,4 +68,10 @@ class CustomLogoutView(LogoutView):
 
 @login_required
 def my_profile(request):
-    return render(request, "users/my_profile.html")
+    user=request.user
+    trainercard = TrainerCard.objects.get(user=user)
+
+    image_data_base64 = base64.b64encode(trainercard.fav_pokemon.sprite.image).decode('utf-8')
+    trainercard.fav_pokemon.sprite.image_data_base64 = image_data_base64
+    context={"trainercard": trainercard,"user":user, }
+    return render(request,"users/my_profile.html",context)

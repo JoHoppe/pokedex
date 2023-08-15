@@ -8,7 +8,9 @@
 </head>
 {% block content %}
 <body>
-
+{{user.username}}
+{{trainercard.fav_pokemon.name}}
+<img src="data:image/png;base64,{{ trainercard.fav_pokemon.sprite.image_data_base64 }}" alt="Pokemon Sprite">
 </body>
 {% endblock content %}
 </html>
