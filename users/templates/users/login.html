@@ -2,37 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login</title>
     {% extends "pokedexapp/base.html" %}
 </head>
 {% block content %}
-
 <div class="column is-4">
-
-    <form action="{% url 'users:login' %}" method="POST">
+    <form action="{% url 'users:login' %}" method="POST" class="box">
         {% csrf_token %}
-        <div>
-
-            {{ form.username_or_email }}
-            {% if form.errors.username_or_email %}
-            <ul class="errorlist">
-                {% for error in form.errors.username_or_email %}
-                <li>{{ error }}</li>
+        <div class="field">
+            <label class="label">Username or Email</label>
+            <div class="control">
+                {{ log_form.username_or_email }}
+            </div>
+            {% if log_form.errors.username_or_email %}
+            <p class="help is-danger">
+                {% for error in log_form.errors.username_or_email %}
+                {{ error }}
                 {% endfor %}
-            </ul>
+            </p>
             {% endif %}
         </div>
-        <div>
-            {{ form.password }}
-            {% if form.errors.password %}
-            <ul class="errorlist">
-                {% for error in form.errors.password %}
-                <li>{{ error }}</li>
+        <div class="field">
+            <label class="label">Password</label>
+            <div class="control">
+                {{ log_form.password }}
+            </div>
+            {% if log_form.errors.password %}
+            <p class="help is-danger">
+                {% for error in log_form.errors.password %}
+                {{ error }}
                 {% endfor %}
-            </ul>
+            </p>
             {% endif %}
         </div>
-        <button type="submit">Login</button>
+        {% if error_messages %}
+        <div class="field">
+            <p class="help is-danger">
+                {% for error in error_messages %}
+                {{ error }}
+                {% endfor %}
+            </p>
+        </div>
+        {% endif %}
+        <div class="field">
+            <div class="control">
+                <button type="submit" class="button is-danger">Login</button>
+            </div>
+        </div>
     </form>
 </div>
 {% endblock content %}

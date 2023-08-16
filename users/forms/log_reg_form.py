@@ -35,12 +35,4 @@ class LoginForm(forms.Form):
         cleaned_data = super().clean()
         username_or_email = cleaned_data.get('username_or_email')
         password = cleaned_data.get('password')
-
-        user = authenticate(request=None, username=username_or_email, password=password)  # Authenticate with username
-        if user is None:
-            user = authenticate(request=None, email=username_or_email, password=password)  # Authenticate with email
-
-        if user is None:
-            raise forms.ValidationError('Invalid credentials')
-
         return cleaned_data

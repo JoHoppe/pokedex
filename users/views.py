@@ -1,3 +1,6 @@
+import base64
+
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -5,18 +8,16 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import LogoutView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from .forms.log_reg_form import LoginForm, RegisterForm
+
 from trainercard.models import TrainerCard
-from pokedexapp.models import Pokemon
-import base64
-
-
+from .forms.log_reg_form import LoginForm, RegisterForm
 
 
 # Create your views here.
 
-
 def custom_login(request):
+    error_messages = []
+
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
         if form.is_valid():
@@ -33,13 +34,18 @@ def custom_login(request):
             if user is not None:
                 login(request, user)
                 return redirect('pokedexapp:index')  # Redirect to your desired page
+            else:
+                error_messages.append("Invalid Username, Email or Password.")
+                return render(request, "users/login.html", {"log_form": form, "error_messages": error_messages})
         else:
-            # Display form errors to the user
-            print(form.errors)
+            error_messages.append("Invalid Form")
+            return render(request, "users/login.html", {"log_form": form, "error_messages": error_messages})
+
     else:
+        # request was not POST or form is invalid
         form = LoginForm()
 
-    return render(request,"", {'form': form})
+    return render(request, "users/login.html", {"log_form": form, "error_messages": error_messages})
 
 
 def custom_register(request):
@@ -52,14 +58,14 @@ def custom_register(request):
 
             # Create the user
             user = User.objects.create_user(username=username, email=email, password=password)
-            trainercard=TrainerCard.objects.create(user=user)
+            trainercard = TrainerCard.objects.create(user=user)
 
             # Redirect to a success page or custom_login page
-            return redirect('pokedexapp:index')  # Replace with the appropriate URL
+            return redirect('pokedexapp:index')
+
     else:
         form = RegisterForm()
-
-    return render(request, 'users/register.html', {'form': form})
+        return render(request, 'users/register.html', {'form': form})
 
 
 class CustomLogoutView(LogoutView):
@@ -67,11 +73,16 @@ class CustomLogoutView(LogoutView):
 
 
 @login_required
-def my_profile(request):
-    user=request.user
+def profile(request, username):
+    user = request.user
+    is_owner = user == TrainerCard.user
     trainercard = TrainerCard.objects.get(user=user)
 
     image_data_base64 = base64.b64encode(trainercard.fav_pokemon.sprite.image).decode('utf-8')
     trainercard.fav_pokemon.sprite.image_data_base64 = image_data_base64
-    context={"trainercard": trainercard,"user":user, }
-    return render(request,"users/my_profile.html",context)
+    context = {"trainercard": trainercard, "is_owner": is_owner, }
+    return render(request, "users/profile.html", context)
+
+
+def edit_profile(request):
+    pass

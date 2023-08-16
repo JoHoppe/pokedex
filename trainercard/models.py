@@ -6,7 +6,8 @@ from pokedexapp.models import Pokemon
 
 class TrainerCard(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_pic = models.BinaryField(null=True)
+    #blank,so no input required in form
+    profile_pic = models.ImageField(null=True,blank=True)
     fav_pokemon = models.ForeignKey(Pokemon, on_delete=models.SET_NULL, null=True, default=1)
 
 
