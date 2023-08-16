@@ -4,33 +4,61 @@
     <meta charset="UTF-8">
     <title>Register</title>
     {% extends "pokedexapp/base.html" %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 </head>
 {% block content %}
 
 <div class="column is-4">
+    <div class="box">
+        <form action="{% url 'users:register' %}" method="POST">
+            {% csrf_token %}
+            <div class="field">
+                <label class="label">Your username</label>
+                <div class="control">
+                    {{ form.username }}
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Your Email</label>
+                <div class="control">
+                    {{ form.email }}
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Your password</label>
+                <div class="control">
+                    {{ form.password }}
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Repeat your password</label>
+                <div class="control">
+                    {{ form.repeat_password }}
+                </div>
+            </div>
 
-    <form action="{% url 'users:register' %}" method="POST">
-        {% csrf_token %}
-        <div>
-            Your username
-            {{form.username}}
+            <div class="field">
+                <div class="control">
+                    <button class="button is-danger" type="submit">Register</button>
+                </div>
+            </div>
+        </form>
+        {% if form.errors %}
+        <div class="field mt-4">
+            <div class="box has-background-danger">
+                <p class="help is-danger">
+                    {% for field, errors in form.errors.items %}
+                        <ul class="mb-4">
+                            {% for error in errors %}
+                                <li class="is-danger">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endfor %}
+                </p>
+            </div>
         </div>
-        <div>
-            Your Email
-            {{ form.email }}
-        </div>
-        <div>
-            Your password
-            {{ form.password }}
-        </div>
-        <div>
-            Repeat your password
-            {{form.repeat_password}}
-        </div>
-
-        <button type="submit">Register</button>
-    </form>
+        {% endif %}
+    </div>
 </div>
 {% endblock content %}
-</html>
 </html>

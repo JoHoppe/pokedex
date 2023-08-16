@@ -1,11 +1,11 @@
 import base64
 
-from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 # we use djangos built in user model, has everythin we need
 from django.contrib.auth.views import LogoutView
+from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
@@ -48,6 +48,7 @@ def custom_login(request):
     return render(request, "users/login.html", {"log_form": form, "error_messages": error_messages})
 
 
+
 def custom_register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -56,16 +57,25 @@ def custom_register(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
 
-            # Create the user
-            user = User.objects.create_user(username=username, email=email, password=password)
-            trainercard = TrainerCard.objects.create(user=user)
+            try:
+                # Create the user
+                user = User.objects.create_user(username=username, email=email, password=password)
+                trainercard = TrainerCard.objects.create(user=user)
 
-            # Redirect to a success page or custom_login page
-            return redirect('pokedexapp:index')
+                # Redirect to a success page or custom_login page
+                return redirect('users:login')
+            except ValidationError:
+                form.add_error(None, "A user with the same username or email already exists.")
+        else:
+            # Form is invalid, render the registration form with errors
+            return render(request, 'users/register.html', {'form': form})
+            print(form.errors)
 
     else:
+        # GET request, render the registration form
         form = RegisterForm()
-        return render(request, 'users/register.html', {'form': form})
+
+    return render(request, 'users/register.html', {'form': form})
 
 
 class CustomLogoutView(LogoutView):
