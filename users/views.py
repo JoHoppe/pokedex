@@ -1,4 +1,5 @@
 import base64
+from django.db import IntegrityError
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -6,6 +7,7 @@ from django.contrib.auth.models import User
 # we use djangos built in user model, has everythin we need
 from django.contrib.auth.views import LogoutView
 from django.core.exceptions import ValidationError
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
@@ -47,8 +49,6 @@ def custom_login(request):
 
     return render(request, "users/login.html", {"log_form": form, "error_messages": error_messages})
 
-
-
 def custom_register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
@@ -64,12 +64,17 @@ def custom_register(request):
 
                 # Redirect to a success page or custom_login page
                 return redirect('users:login')
-            except ValidationError:
-                form.add_error(None, "A user with the same username or email already exists.")
+            except IntegrityError as e:
+                if 'UNIQUE constraint failed' in str(e):
+                    if 'username' in str(e):
+                        form.add_error('username', "A user with the same username already exists.")
+                    elif 'email' in str(e):
+                        form.add_error('email', "A user with the same email already exists.")
+                else:
+                    form.add_error(None, "An error occurred during registration.")
         else:
             # Form is invalid, render the registration form with errors
             return render(request, 'users/register.html', {'form': form})
-            print(form.errors)
 
     else:
         # GET request, render the registration form
@@ -84,13 +89,28 @@ class CustomLogoutView(LogoutView):
 
 @login_required
 def profile(request, username):
-    user = request.user
-    is_owner = user == TrainerCard.user
-    trainercard = TrainerCard.objects.get(user=user)
+    try:
+        profile = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return HttpResponse("User not found", status=404)
 
-    image_data_base64 = base64.b64encode(trainercard.fav_pokemon.sprite.image).decode('utf-8')
-    trainercard.fav_pokemon.sprite.image_data_base64 = image_data_base64
-    context = {"trainercard": trainercard, "is_owner": is_owner, }
+    user = request.user
+    is_owner = user == profile
+
+    try:
+        trainercarduser = TrainerCard.objects.get(user=user)
+    except TrainerCard.DoesNotExist:
+        return HttpResponse("TrainerCard not found", status=404)
+
+    try:
+        trainercard = TrainerCard.objects.get(user=profile)
+        image_data_base64 = base64.b64encode(trainercard.fav_pokemon.sprite.image).decode('utf-8')
+        trainercard.fav_pokemon.sprite.image_data_base64 = image_data_base64
+    except TrainerCard.DoesNotExist:
+
+        return HttpResponse("TrainerCard not found for profile user", status=404)
+
+    context = {"trainercard": trainercard, "is_owner": is_owner}
     return render(request, "users/profile.html", context)
 
 

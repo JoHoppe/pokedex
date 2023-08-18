@@ -15,6 +15,8 @@ class TrainerCard(models.Model):
         self.fav_pokemon = new_fav_pokemon
         self.save()
 
+    def __str__(self):
+        return (self.fav_pokemon.name)
     def set_profile_pic(self):
         pass
         #TODO: implement set profile pic

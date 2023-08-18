@@ -6,11 +6,17 @@
     {% extends "pokedexapp/base.html" %}
 
 </head>
-{% block content %}
+
 <body>
+{% block content %}
+
+{% if is_owner %}
+<p> if owner</p>
+{% endif %}
+{{is_owner}}
 {{user.username}}
 {{trainercard.fav_pokemon.name}}
-<img src="data:image/png;base64,{{ trainercard.fav_pokemon.sprite.image_data_base64 }}" alt="Pokemon Sprite">
+<img alt="Pokemon Sprite" src="data:image/png;base64,{{ trainercard.fav_pokemon.sprite.image_data_base64 }}">
 </body>
 {% endblock content %}
 </html>
