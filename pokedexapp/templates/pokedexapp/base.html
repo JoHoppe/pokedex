@@ -11,93 +11,105 @@
     <link href="{% static 'css/my_styles.css' %}" rel="stylesheet">
 </head>
 <body class="has-navbar-fixed-top">
-<nav class="navbar is-fixed-top">
-    <div class="navbar-item is-danger">
-        <a href="{% url 'pokedexapp:index' %}">
-            <button class="button is-danger" type="button">Home</button>
-        </a>
-    </div>
-    <div class="navbar-item">
-        <form action="{% url 'pokedexapp:search' %}" method="GET">
-            <div class="field has-addons">
-                <div class="control">
-                    <input class="input is-danger" name="q" placeholder="Search by name or id" type="text">
-                </div>
-                <div class="control">
-                    <button class="button is-danger" type="submit">Search</button>
-                </div>
+<nav aria-label="main navigation" class="navbar is-fixed-top" role="navigation">
+    <div id="navbar-menu" class="navbar-menu">
+        <div class="navbar-start">
+            <div class="navbar-item is-danger">
+                <a href="{% url 'pokedexapp:index' %}">
+                    <button class="button is-danger" type="button">Home</button>
+                </a>
             </div>
-        </form>
-    </div>
-    <div class="navbar-end">
-        {% if user.is_authenticated %}
-        <!-- ... (authenticated user dropdown) ... -->
-        {% else %}
-        <div class="navbar-item">
-            <div class="dropdown">
-                <div class="dropdown-trigger">
-                    <button aria-controls="dropdown-login" aria-haspopup="true" class="button is-grey dropdown-button"
-                            onclick="this.parentNode.parentNode.classList.toggle('is-active')">
-                        <span>Login</span>
-                        <span class="icon is-small">
-                            <i aria-hidden="true" class="fas fa-angle-down"></i>
-                        </span>
-                    </button>
-                </div>
-                <div class="dropdown-menu" id="dropdown-login" role="menu">
-                    <div class="dropdown-content">
-                        <div class="dropdown-item">
-                            <form action="{% url 'users:login' %}" method="post">
-                                {% csrf_token %}
-                                <div class="field">
-                                    <label class="label">Username or Email</label>
-                                    <div class="control">
-                                        {{ log_form.username_or_email }}
-                                    </div>
-                                    {% if log_form.errors.username_or_email %}
-                                    <p class="help is-danger">
-                                        {% for error in log_form.errors.username_or_email %}
-                                        {{ error }}
-                                        {% endfor %}
-                                    </p>
-                                    {% endif %}
-                                </div>
-                                <div class="field">
-                                    <label class="label">Password</label>
-                                    <div class="control">
-                                        {{ log_form.password }}
-                                    </div>
-                                    {% if log_form.errors.password %}
-                                    <p class="help is-danger">
-                                        {% for error in log_form.errors.password %}
-                                        {{ error }}
-                                        {% endfor %}
-                                    </p>
-                                    {% endif %}
-                                </div>
-                                <div class="field">
-                                    <div class="control">
-                                        <button class="button is-danger" type="submit">Login</button>
-                                    </div>
-                                </div>
-                            </form>
+            <div class="navbar-item">
+                <form action="{% url 'pokedexapp:search' %}" method="GET">
+                    <div class="field has-addons">
+                        <div class="control">
+                            <input class="input is-danger" name="q" placeholder="Search by name or id" type="text">
+                        </div>
+                        <div class="control">
+                            <button class="button is-danger" type="submit">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="navbar-end">
+            {% if user.is_authenticated %}
+            <div class="navbar-item has-dropdown -trigger">
+                <div class="dropdown is-right">
+                    <div class="dropdown-trigger">
+                        <button class="button is-grey dropdown-button" aria-haspopup="true"
+                                aria-controls="dropdown-menu" onclick="this.parentNode.parentNode.classList.toggle('is-active')">
+                            <span>{{ user.username }}</span>
+                            <span class="icon is-small">
+                                <i aria-hidden="true" class="fas fa-angle-down"></i>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                        <div class="dropdown-content">
+                            <a class="navbar-item" href="{% url 'users:profile' user.username %}">My Profile</a>
+                            <a class="navbar-item" href="{% url 'users:logout' %}">Logout</a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="navbar-item">
-            <div class="register-menu" id="register" role="menu">
-                <a href="{% url 'users:register' %}">
-                    <button class="button" type="button">Register</button>
-                </a>
+            {% else %}
+            <div class="navbar-item">
+                <div class="dropdown is-right">
+                    <div class="dropdown-trigger">
+                        <button class="button is-grey dropdown-button" aria-haspopup="true"
+                                aria-controls="dropdown-login" onclick="this.parentNode.parentNode.classList.toggle('is-active')">
+                            <span>Login</span>
+                            <span class="icon is-small">
+                                <i aria-hidden="true" class="fas fa-angle-down"></i>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-login" role="menu">
+                        <div class="dropdown-content">
+                            <div class="dropdown-item">
+                                <form action="{% url 'users:login' %}" method="post">
+                                    {% csrf_token %}
+                                    <label class="label">Username or Email</label>
+                                    {{ log_form.username_or_email }}
+                                    {% if log_form.errors.username_or_email %}
+                                    <ul class="errorlist">
+                                        {% for error in log_form.errors.username_or_email %}
+                                        <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                    <label class="label">Password</label>
+                                    {{ log_form.password }}
+                                    {% if log_form.errors.password %}
+                                    <ul class="errorlist">
+                                        {% for error in log_form.errors.password %}
+                                        <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                    <button class="button is-danger" type="submit">Login</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <div class="navbar-item">
+                <div class="register-menu" id="register" role="menu">
+                    <a href="{% url 'users:register' %}">
+                        <button class="button" type="button">Register</button>
+                    </a>
+                </div>
+            </div>
+            {% endif %}
         </div>
-        {% endif %}
     </div>
 </nav>
 
-{% block content %}{% endblock content %}
+<div class="container" style="margin-top: 5%;">
+    {% block content %}{% endblock content %}
+</div>
 
 </body>
 </html>

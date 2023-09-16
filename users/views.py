@@ -11,8 +11,10 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
+from pokedexapp.models import Pokemon
 from trainercard.models import TrainerCard
 from .forms.log_reg_form import LoginForm, RegisterForm
+from trainercard.forms.fav_pok_form import Fav_pok_form
 
 
 # Create your views here.
@@ -89,6 +91,7 @@ class CustomLogoutView(LogoutView):
 
 @login_required
 def profile(request, username):
+    profile_form = Fav_pok_form
     try:
         profile = User.objects.get(username=username)
     except User.DoesNotExist:
@@ -110,8 +113,17 @@ def profile(request, username):
 
         return HttpResponse("TrainerCard not found for profile user", status=404)
 
-    context = {"trainercard": trainercard, "is_owner": is_owner}
-    return render(request, "users/profile.html", context)
+    if request.method == "POST":
+        profile_form=Fav_pok_form(request.POST)
+        if profile_form.is_valid():
+            poke_id=profile_form.fav_pok_form
+            trainercard.fav_pokemon=Pokemon.objects.get(id=poke_id)
+            trainercard.save()
+        else:
+            # Form is invalid, render the registration form with errors
+            profile_form = Fav_pok_form()
+    context = {"trainercard": trainercard, "is_owner": is_owner,'profile_form': profile_form}
+    return render(request, "users/profile.html", context,)
 
 
 def edit_profile(request):

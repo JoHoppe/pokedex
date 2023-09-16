@@ -85,12 +85,16 @@ def search(request):
         q_pokemons = Pokemon.objects.filter(id__contains=query)
         # Convert query into a list and iterate over it
         pokemons = list(q_pokemons)
-        for pokemon in pokemons:
-            image_data_base64 = base64.b64encode(pokemon.sprite.image).decode('utf-8')
-            pokemon.sprite.image_data_base64 = image_data_base64
+        if len(pokemons) <= 0:
+            return render(request,"pokedexapp/404.html")
+        else:
+            for pokemon in pokemons:
+                image_data_base64 = base64.b64encode(pokemon.sprite.image).decode('utf-8')
+                pokemon.sprite.image_data_base64 = image_data_base64
 
-        context = {"pokemons": pokemons}
-        return render(request, "pokedexapp/search.html", context)
+            context = {"pokemons": pokemons}
+
+            return render(request, "pokedexapp/search.html", context)
 
     except ValueError:
         q_pokemons = Pokemon.objects.filter(name__contains=query)

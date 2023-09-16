@@ -10,7 +10,7 @@ class RegisterForm(forms.Form):
     repeat_password = forms.CharField(label="repeat_password", widget=forms.PasswordInput,required=True)
 
     # clean get automatically called during the authentication
-    # use it to create custom requirements like password strength and check for correct password or valid email
+    # used to create custom requirements like password strength and check for correct password or valid email
     def clean(self):
         cleaned_deta = super().clean()
         username = cleaned_deta.get('username')
@@ -26,7 +26,7 @@ class RegisterForm(forms.Form):
         return cleaned_deta
 
 
-# a bit of a useless form, might be usefull later
+
 class LoginForm(forms.Form):
     username_or_email = forms.CharField(label="Username or Email",required=True)
     password = forms.CharField(label="Password", widget=forms.PasswordInput,required=True)
