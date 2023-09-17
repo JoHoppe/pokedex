@@ -8,7 +8,7 @@ class TrainerCard(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     #blank,so no input required in form
     #TODO:set Default
-    profile_pic = models.ImageField(null=True,blank=True,)
+    profile_pic = models.ImageField(null=True,blank=True,upload_to='pokedex/media/profilepics')
     fav_pokemon = models.ForeignKey(Pokemon, on_delete=models.SET_NULL, null=True, default=1)
 
 

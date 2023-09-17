@@ -11,4 +11,5 @@ urlpatterns = [
     path("profile", views.profile, name="profile"),
     path("logout", views.CustomLogoutView.as_view(), name="logout"),
 
+
 ]
