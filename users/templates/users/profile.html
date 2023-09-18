@@ -44,6 +44,10 @@
 {{is_owner}}
 {{user.username}}
 {{trainercard.fav_pokemon.name}}
+{{trainercard.profile_pic}}
+
+<p>{{trainercard.profile_pic}}</p>
+<img  src="/{{trainercard.profile_pic|safe}}" height="128" width="128">
 <img alt="Pokemon Sprite" src="data:image/png;base64,{{ trainercard.fav_pokemon.sprite.image_data_base64 }}">
 </body>
 {% endblock content %}

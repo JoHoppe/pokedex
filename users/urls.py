@@ -12,4 +12,5 @@ urlpatterns = [
     path("logout", views.CustomLogoutView.as_view(), name="logout"),
     path("profile/edit_profile",views.edit_profile,name="edit_profile"),
 
+
 ]

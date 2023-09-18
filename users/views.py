@@ -123,6 +123,7 @@ def profile(request, username):
             # Form is invalid, render the registration form with errors
             profile_form = Fav_pok_form()
     context = {"trainercard": trainercard, "is_owner": is_owner,'profile_form': profile_form}
+    print(trainercard.profile_pic)
     return render(request, "users/profile.html", context,)
 
 
