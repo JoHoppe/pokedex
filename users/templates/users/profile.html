@@ -11,15 +11,15 @@
 {% block content %}
 
 {% if is_owner %}
-    <form action="{% url 'users:profile' username=trainercard.user.username %}" class="box" method="POST">
+    <form action="{% url 'users:profile' username=trainercard.user.username %}" class="box" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <label class="label"><i class="favorite_pokemon"></i>Set your favorite Pokemon</label>
         <div class="control">
-            {{profile_form}}
+            {{fav_pok_form}}
         </div>
         <div class="field">
             <div class="control">
-                <button class="button is-danger" type="submit"><i class="Set_fav_pok_button"></i>Submit</button>
+                <button class="button is-danger" type="fav_pok_submit"><i class="Set_fav_pok_button"></i>Submit</button>
             </div>
         </div>
     </form>
@@ -38,16 +38,30 @@
         </div>
     </div>
 
+
+
     {% endif %}
 {% endif %}
+
 
 {{is_owner}}
 {{user.username}}
 {{trainercard.fav_pokemon.name}}
 {{trainercard.profile_pic}}
+<form action="{% url 'users:profile' username=trainercard.user.username %}" class="box" method="POST">
+        {% csrf_token %}
+        <label class="label"><i class="favorite_pokemon"></i>Set your Profile Picture</label>
+        <div class="control">
+            {{profile_pic_form}}
+        </div>
+        <div class="field">
+            <div class="control">
+                <button class="button is-danger" type="profile_pic_submit"><i class="Set_profile_pic_button"></i>Submit</button>
+            </div>
+        </div>
+</form>
+<img  src="{{trainercard.profile_pic.url|safe}}" height="128" width="128">
 
-<p>{{trainercard.profile_pic}}</p>
-<img  src="/{{trainercard.profile_pic|safe}}" height="128" width="128">
 <img alt="Pokemon Sprite" src="data:image/png;base64,{{ trainercard.fav_pokemon.sprite.image_data_base64 }}">
 </body>
 {% endblock content %}

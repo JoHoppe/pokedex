@@ -1,6 +1,9 @@
 import base64
-from django.db import IntegrityError
+import os
 
+from django.core.files.storage import FileSystemStorage
+from django.db import IntegrityError
+from pokedex import  settings
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -12,6 +15,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
 from pokedexapp.models import Pokemon
+from trainercard.forms.profile_pic_form import Profile_pic_form
 from trainercard.models import TrainerCard
 from .forms.log_reg_form import LoginForm, RegisterForm
 from trainercard.forms.fav_pok_form import Fav_pok_form
@@ -91,7 +95,8 @@ class CustomLogoutView(LogoutView):
 
 @login_required
 def profile(request, username):
-    profile_form = Fav_pok_form
+    fav_pok_form = Fav_pok_form
+    profile_pic_form = Profile_pic_form
     try:
         profile = User.objects.get(username=username)
     except User.DoesNotExist:
@@ -101,7 +106,7 @@ def profile(request, username):
     is_owner = user == profile
 
     try:
-        trainercarduser = TrainerCard.objects.get(user=user)
+        TrainerCard.objects.get(user=user)
     except TrainerCard.DoesNotExist:
         return HttpResponse("TrainerCard not found", status=404)
 
@@ -114,18 +119,26 @@ def profile(request, username):
         return HttpResponse("TrainerCard not found for profile user", status=404)
 
     if request.method == "POST":
-        profile_form=Fav_pok_form(request.POST)
-        if profile_form.is_valid():
-            poke_id=profile_form.fav_pok_form
+        fav_pok_form=Fav_pok_form(request.POST)
+        profile_pic_form= Profile_pic_form(request.POST,request.FILES)
+        if fav_pok_form.is_valid():
+            poke_id=fav_pok_form.fav_pok_form
             trainercard.fav_pokemon=Pokemon.objects.get(id=poke_id)
             trainercard.save()
         else:
             # Form is invalid, render the registration form with errors
-            profile_form = Fav_pok_form()
-    context = {"trainercard": trainercard, "is_owner": is_owner,'profile_form': profile_form}
-    print(trainercard.profile_pic)
+            fav_pok_form = Fav_pok_form()
+        if profile_pic_form.is_valid():
+            print(profile_pic_form.is_valid())
+            profile_pic = profile_pic_form.cleaned_data
+            print(profile_pic)
+            fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'profilepics'))
+            filename = fs.save(profile_pic.name, profile_pic)
+            profile_pic_url = fs.url(filename)
+            trainercard.profile_pic = profile_pic_url
+            trainercard.save()
+            return redirect('view_profile')
+        else:
+            profile_pic_form=Profile_pic_form
+    context = {"trainercard": trainercard, "is_owner": is_owner,'fav_pok_form': fav_pok_form,"profile_pic_form":profile_pic_form}
     return render(request, "users/profile.html", context,)
-
-
-def edit_profile(request):
-    pass

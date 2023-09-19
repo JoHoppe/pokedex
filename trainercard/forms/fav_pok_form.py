@@ -20,3 +20,5 @@ class Fav_pok_form(forms.Form):
                 Pokemon.objects.get(name=fav_pok_form)
             except Pokemon.DoesNotExist:
                 raise forms.ValidationError("Input is not a valid Pokemon ID or Name")
+
+        return cleaned_deta
