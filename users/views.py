@@ -133,8 +133,8 @@ def profile(request, username):
             trainercard.save()
 
         else:
-            # Form is invalid, render the registration form with errors
-            print("else")
+            #TODO: Form is invalid, render the registration form with errors
+
             fav_pok_form = Fav_pok_form()
             profile_pic_form = Profile_pic_form()
 
