@@ -1,11 +1,8 @@
 from django import forms
+from trainercard.models import TrainerCard
 
 
-
-
-class Profile_pic_form(forms.Form):
-    profile_pic_form = forms.ImageField(required=True,label="Upload a Profile Picture",)
-
-
-
-
+class Profile_pic_form(forms.ModelForm):
+    class Meta:
+        model = TrainerCard
+        fields = ["profile_pic"]

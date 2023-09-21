@@ -48,7 +48,8 @@
 {{user.username}}
 {{trainercard.fav_pokemon.name}}
 {{trainercard.profile_pic}}
-<form action="{% url 'users:profile' username=trainercard.user.username %}" class="box" method="POST">
+<form action="{% url 'users:profile' username=trainercard.user.username %}"
+      class="box" method="POST"enctype="multipart/form-data">
         {% csrf_token %}
         <label class="label"><i class="favorite_pokemon"></i>Set your Profile Picture</label>
         <div class="control">
