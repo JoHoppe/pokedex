@@ -118,6 +118,7 @@ def profile(request, username):
          return HttpResponse("TrainerCard not found for profile user", status=404)
     if request.method == "POST":
         print("post")
+        print(request.POST)
         fav_pok_form = Fav_pok_form(request.POST)
         profile_pic_form = Profile_pic_form(request.POST, request.FILES)
         if "fav_pok_form" in request.POST and fav_pok_form.is_valid():
