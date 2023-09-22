@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    {% extends "pokedexapp/base.html" %}
+    <!-- Add a link to the font awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Add Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+
+{% block content %}
+<body style="background-image: url('https://wallpaperset.com/w/full/f/9/c/383749.jpg');background-size: cover; height: 100vh;display: flex; /* Use flex layout */
+            justify-content: left; /* Horizontally center content */">
+<section class="section">
+    <div class="container">
+        <div class="columns is-left">
+            <div class="column is-half">
+                <form action="{% url 'users:register' %}" method="POST" class="box">
+                    {% csrf_token %}
+                    <div class="field">
+                        <label class="label"><i class="fas fa-user"></i> Your username</label>
+                        <div class="control">
+                            {{ form.username }}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label"><i class="fas fa-envelope"></i> Your Email</label>
+                        <div class="control">
+                            {{ form.email }}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label"><i class="fas fa-key"></i> Your password</label>
+                        <div class="control">
+                            {{ form.password }}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label"><i class="fas fa-key"></i> Repeat your password</label>
+                        <div class="control">
+                            {{ form.repeat_password }}
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-danger" type="submit"><i class="fas fa-user-plus"></i> Register</button>
+                        </div>
+                    </div>
+                </form>
+                {% if form.errors %}
+                <div class="field mt-4">
+                    <div class="box has-background-danger">
+                        <p class="help is-danger">
+                            {% for field, errors in form.errors.items %}
+                                <ul class="mb-4">
+                                    {% for error in errors %}
+                                        <li class="is-danger">{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+</body>
+</html>

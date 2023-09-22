@@ -1,10 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Other meta tags, title, etc. -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <!-- Load your CSS and fontawesome links here -->
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/8ce67e1d09.js"></script>
+    {% load static %}
+    <link href="{% static 'css/my_styles.css' %}" rel="stylesheet">
+</head>
+<body class="has-navbar-fixed-top">
+<nav aria-label="main navigation" class="navbar is-fixed-top" role="navigation">
+    <div id="navbar-menu" class="navbar-menu">
+        <div class="navbar-start">
+            <div class="navbar-item">
+                <a href="{% url 'pokedexapp:index' %}">
+                    <button class="button is-danger" type="button">Home</button>
+                </a>
+            </div>
+            <div class="navbar-item">
+                <form action="{% url 'pokedexapp:search' %}" method="GET">
+                    <div class="field has-addons">
+                        <div class="control">
+                            <input class="input is-danger" name="q" placeholder="Search by name or id" type="text">
+                        </div>
+                        <div class="control">
+                            <button class="button is-danger" type="submit">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="navbar-end">
+            {% if user.is_authenticated %}
+            <div class="navbar-item has-dropdown -trigger">
+                <div class="dropdown is-right">
+                    <div class="dropdown-trigger">
+                        <button class="button is-grey dropdown-button" aria-haspopup="true"
+                                aria-controls="dropdown-menu"
+                                onclick="this.parentNode.parentNode.classList.toggle('is-active')">
+                            <span>{{ user.username }}</span>
+                            <span class="icon is-small">
+                                <i aria-hidden="true" class="fas fa-angle-down"></i>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu" role="menu" style="position: absolute; top: 65%;">
 
-<p>
-    <ul>
-        <li><a href="{% url 'pokedexapp:index'%}">Home</a></li>
+                            <a class="box" style="margin-bottom: 0.1rem; padding: 1rem;margin-right:0.05rem" href="{% url 'users:profile' user.username %}">My Profile</a>
 
-    </ul>
+                            <a class="box" style="margin-bottom: 0.1rem; padding: 1rem;margin-right:0.05rem" href="{% url 'users:logout' %}">Logout</a>
 
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="navbar-item">
+                <div class="dropdown is-right">
+                    <div class="dropdown-trigger">
+                        <button class="button is-grey dropdown-button" aria-haspopup="true"
+                                aria-controls="dropdown-login"
+                                onclick="this.parentNode.parentNode.classList.toggle('is-active')">
+                            <span>Login</span>
+                            <span class="icon is-small">
+                                <i aria-hidden="true" class="fas fa-angle-down"></i>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-login" role="menu">
+                        <div class="dropdown-content">
+                            <div class="dropdown-item">
+                                <form action="{% url 'users:login' %}" method="post">
+                                    {% csrf_token %}
+                                    <label class="label">Username or Email</label>
+                                    {{ log_form.username_or_email }}
+                                    {% if log_form.errors.username_or_email %}
+                                    <ul class="errorlist">
+                                        {% for error in log_form.errors.username_or_email %}
+                                        <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                    <label class="label">Password</label>
+                                    {{ log_form.password }}
+                                    {% if log_form.errors.password %}
+                                    <ul class="errorlist">
+                                        {% for error in log_form.errors.password %}
+                                        <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                    <button class="button is-danger" type="submit">Login</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-item">
+                <div class="register-menu" id="register" role="menu">
+                    <a href="{% url 'users:register' %}">
+                        <button class="button" type="button">Register</button>
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>
 
-</p>
-{%block content %}{% endblock content%}
+<div class="container"style="margin-top: 3%;">
+    {% block content %}{% endblock content %}
+</div>
+
+</body>
+</html>

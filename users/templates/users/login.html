@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    {% extends "pokedexapp/base.html" %}
+    <!-- Add a link to the font awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Add some custom CSS styles -->
+    <style>
+        body{
+
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            margin: 0; /* Remove default body margin */
+            padding: 0; /* Remove default body padding */
+        }
+        .box {
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .field {
+            margin: 0px;
+        }
+        .control {
+            padding: 0px;
+        }
+
+
+    </style>
+</head>
+{% block content %}
+<body style="background-image: url('https://wallpaperset.com/w/full/f/9/c/383749.jpg');background-size: cover; height: 100vh;display: flex; /* Use flex layout */
+            justify-content: left; /* Horizontally center content */">
+<div class="column is-4">
+    <form action="{% url 'users:login' %}" class="box" method="POST">
+        {% csrf_token %}
+        <div class="field">
+            <label class="label"><i class="fas fa-user"></i> Username or Email</label>
+            <div class="control">
+                {{ log_form.username_or_email }}
+            </div>
+            {% if log_form.errors.username_or_email %}
+            <p class="help is-danger">
+                {% for error in log_form.errors.username_or_email %}
+                {{ error }}
+                {% endfor %}
+            </p>
+            {% endif %}
+        </div>
+        <div class="field">
+            <label class="label"><i class="fas fa-key"></i> Password</label>
+            <div class="control">
+                {{ log_form.password }}
+            </div>
+            {% if log_form.errors.password %}
+            <p class="help is-danger">
+                {% for error in log_form.errors.password %}
+                {{ error }}
+                {% endfor %}
+            </p>
+            {% endif %}
+        </div>
+        {% if error_messages %}
+        <div class="field">
+            <p class="help is-danger">
+                {% for error in error_messages %}
+                {{ error }}
+                {% endfor %}
+            </p>
+        </div>
+        {% endif %}
+        <div class="field">
+            <div class="control">
+                <button class="button is-danger" type="submit"><i class="fas fa-sign-in-alt"></i> Login</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+{% endblock content %}
+</html>

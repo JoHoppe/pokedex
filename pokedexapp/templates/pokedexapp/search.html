@@ -1,0 +1,43 @@
+<!DOCTYPE Html>
+<html>
+
+{% extends 'pokedexapp/base.html' %}
+
+{% block content %}
+
+<div class="columns is-multiline has-background-grey">
+    {% for pokemon in pokemons %}
+    <div class="column is-4">
+        <div class="card">
+            <a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id %}" class="card-content">
+                <!-- Pokémon Details -->
+                <p class="poke_title">{{ pokemon.id }}: {{ pokemon.name }}</p>
+                <!-- Pokémon Types -->
+                <div class="card-footer">
+                    <div class="tags">
+                        {% for css_type in pokemon.type_name %}
+                        <span class="tag is-rounded type-badge type-{{ css_type|lower }}">
+                            {{ css_type }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="card-image">
+                    <!-- Pokémon Image -->
+                    {% if pokemon.sprite and pokemon.sprite.image_data_base64 %}
+                    <img src="data:image/png;base64,{{ pokemon.sprite.image_data_base64 }}" alt="Pokemon Sprite">
+                    {% else %}
+                    <p>No sprite available.</p>
+                    {% endif %}
+
+
+                </div>
+            </a>
+
+
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
