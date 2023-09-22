@@ -143,6 +143,8 @@ def profile(request, username):
                 trainercard = TrainerCard.objects.get(user=profile)
                 trainercard.profile_pic.delete(save=True)
                 trainercard.profile_pic = uploaded_image
+                image_data_base64 = base64.b64encode(trainercard.fav_pokemon.sprite.image).decode('utf-8')
+                trainercard.fav_pokemon.sprite.image_data_base64 = image_data_base64
                 trainercard.save()
     else:
         fav_pok_form = Fav_pok_form()

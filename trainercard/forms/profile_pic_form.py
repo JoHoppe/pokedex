@@ -8,3 +8,6 @@ class Profile_pic_form(forms.ModelForm):
     class Meta:
         model = TrainerCard
         fields = ["profile_pic"]
+        labels = {
+            "profile_pic": "Upload a profile picture",
+        }

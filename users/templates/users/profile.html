@@ -4,41 +4,40 @@
     <meta charset="UTF-8">
     <title>Title</title>
     {% extends "pokedexapp/base.html" %}
-
 </head>
-
 <body>
 {% block content %}
-<div class="tile is-ancestor">
-    <div class="tile is-vertical is-7 notification is-danger">
+<div class="tile is-ancestor is-flex">
+    <div class="tile is-vertical is-7 notification is-danger" style="border-radius: 2em;">
         <!-- Profile Picture and Trainer Card Title -->
         <div class="tile is-parent is-vertical is-flex">
-            <div class="tile is-child is-flex is-align-items-center">
-                <figure class="image is-128x128">
-                    {% if trainercard.profile_pic%}
-                    <img src="{{ trainercard.profile_pic.url|safe }}" alt="Profile Picture">
-                    {%else%}
-                    {%load static%}
-                    <img src="{% static 'defaultProfilepic/avatar-7964945_640.png' %}">
-                    {%endif%}
-                </figure>
-                <div>
-                    <p class="title is-4 mt-0" style="margin-left: 0.5em;">Trainer Card of User</p>
-                </div>
+        <div class="tile is-child is-flex is-align-items-center">
+            <figure class="image is-128x128">
+                {% if trainercard.profile_pic %}
+                <img src="{{trainercard.profile_pic.url|safe}}" alt="Error loading your Profile Picture"
+                     style="max-width: 128px; max-height: 128px; border-radius: 100%;">
+                {% else %}
+                {% load static %}
+                <img src="{% static 'defaultProfilepic/avatar-7964945_640.png' %}" width="128" height="128">
+                {% endif %}
+            </figure>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; height: 100%;">
+                <p class="title is-4 mt-0">Trainer Card of {{trainercard.user.username}}</p>
             </div>
         </div>
+    </div>
         <!-- Separation Line -->
         <div class="tile is-child">
-            <hr>
+            <hr style="margin: 0.5rem">
         </div>
         <!-- Favorite Pokemon Section -->
         <div class="tile is-child">
-            <p class="is-capitalized">Favorite Pokemon is: {{ trainercard.fav_pokemon.name|upper }}</p>
+            <p class="is-capitalized">Favorite Pokemon is: {{trainercard.fav_pokemon.name|upper }}</p>
         </div>
         <!-- Pokemon Sprite -->
         <div class="tile is-child">
             <figure class="image is-128x128">
-                <img src="data:image/png;base64,{{ trainercard.fav_pokemon.sprite.image_data_base64 }}"
+                <img src="data:image/png;base64,{{trainercard.fav_pokemon.sprite.image_data_base64 }}"
                      alt="Pokemon Sprite">
             </figure>
         </div>
@@ -54,39 +53,46 @@
     <div class="tile is-1"></div>
 
     {% if is_owner %}
-    <div class="tile is-vertical is-4 notification is-gray">
-        <p>Edit Your Trainercard:</p>
-        <form action="{% url 'users:profile' username=trainercard.user.username %}" method="POST"
-              enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="field">
-                <label class="label"><i class="favorite_pokemon"></i>Set your Profile Picture</label>
-                <div class="control">
-                    {{ profile_pic_form }}
-                </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <button class="button is-danger" type="submit"><i class="Set_profile_pic_button"></i>Submit</button>
-                </div>
-            </div>
-        </form>
 
-        <form action="{% url 'users:profile' username=trainercard.user.username %}" method="POST"
-              enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="field">
-                <label class="label"><i class="favorite_pokemon"></i>Set your favorite Pokemon</label>
-                <div class="control">
-                    {{ fav_pok_form }}
-                </div>
+    <div class="tile is-vertical is-4 notification is-white" style="padding: 0;border-radius: 2em;">
+        <div class="box" style="border-radius: 2em;">
+            <p style="font-size: 1.5em;">Edit Your Trainercard:</p>
+            <div class="tile is-child">
+                <hr>
             </div>
-            <div class="field">
-                <div class="control">
-                    <button class="button is-danger" type="submit"><i class="Set_fav_pok_button"></i>Submit</button>
+            <form action="{% url 'users:profile' username=trainercard.user.username %}" method="POST"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="field">
+                    <div class="control">
+                        {{ profile_pic_form }}
+                    </div>
                 </div>
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-danger" type="submit"><i class="Set_profile_pic_button"></i>Submit
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="tile is-child">
+                <hr>
             </div>
-        </form>
+            <form action="{% url 'users:profile' username=trainercard.user.username %}" method="POST"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="field">
+                    <div class="control">
+                        {{ fav_pok_form }}
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-danger" type="submit"><i class="Set_fav_pok_button"></i>Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
 
         {% if profile_form.errors %}
         <div class="field mt-4">
@@ -106,9 +112,6 @@
     </div>
     {% endif %}
 </div>
-</div>
-
-
-</body>
 {% endblock content %}
+</body>
 </html>

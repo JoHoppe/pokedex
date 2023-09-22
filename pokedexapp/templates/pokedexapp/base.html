@@ -14,7 +14,7 @@
 <nav aria-label="main navigation" class="navbar is-fixed-top" role="navigation">
     <div id="navbar-menu" class="navbar-menu">
         <div class="navbar-start">
-            <div class="navbar-item is-danger">
+            <div class="navbar-item">
                 <a href="{% url 'pokedexapp:index' %}">
                     <button class="button is-danger" type="button">Home</button>
                 </a>
@@ -38,18 +38,20 @@
                 <div class="dropdown is-right">
                     <div class="dropdown-trigger">
                         <button class="button is-grey dropdown-button" aria-haspopup="true"
-                                aria-controls="dropdown-menu" onclick="this.parentNode.parentNode.classList.toggle('is-active')">
+                                aria-controls="dropdown-menu"
+                                onclick="this.parentNode.parentNode.classList.toggle('is-active')">
                             <span>{{ user.username }}</span>
                             <span class="icon is-small">
                                 <i aria-hidden="true" class="fas fa-angle-down"></i>
                             </span>
                         </button>
                     </div>
-                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                        <div class="dropdown-content">
-                            <a class="navbar-item" href="{% url 'users:profile' user.username %}">My Profile</a>
-                            <a class="navbar-item" href="{% url 'users:logout' %}">Logout</a>
-                        </div>
+                    <div class="dropdown-menu" id="dropdown-menu" role="menu" style="position: absolute; top: 65%;">
+
+                            <a class="box" style="margin-bottom: 0.1rem; padding: 1rem;margin-right:0.05rem" href="{% url 'users:profile' user.username %}">My Profile</a>
+
+                            <a class="box" style="margin-bottom: 0.1rem; padding: 1rem;margin-right:0.05rem" href="{% url 'users:logout' %}">Logout</a>
+
                     </div>
                 </div>
             </div>
@@ -58,7 +60,8 @@
                 <div class="dropdown is-right">
                     <div class="dropdown-trigger">
                         <button class="button is-grey dropdown-button" aria-haspopup="true"
-                                aria-controls="dropdown-login" onclick="this.parentNode.parentNode.classList.toggle('is-active')">
+                                aria-controls="dropdown-login"
+                                onclick="this.parentNode.parentNode.classList.toggle('is-active')">
                             <span>Login</span>
                             <span class="icon is-small">
                                 <i aria-hidden="true" class="fas fa-angle-down"></i>
@@ -107,7 +110,7 @@
     </div>
 </nav>
 
-<div class="container" style="margin-top: 5%;">
+<div class="container"style="margin-top: 3%;">
     {% block content %}{% endblock content %}
 </div>
 
