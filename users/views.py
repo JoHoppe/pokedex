@@ -3,7 +3,7 @@ import os
 
 from django.core.files.storage import FileSystemStorage
 from django.db import IntegrityError
-from pokedex import  settings
+from pokedex import settings
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -13,6 +13,9 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.core.files.uploadedfile import TemporaryUploadedFile
+from PIL import Image
+import io
 
 from pokedexapp.models import Pokemon
 from trainercard.forms.profile_pic_form import Profile_pic_form
@@ -54,6 +57,7 @@ def custom_login(request):
         form = LoginForm()
 
     return render(request, "users/login.html", {"log_form": form, "error_messages": error_messages})
+
 
 def custom_register(request):
     if request.method == 'POST':
@@ -115,31 +119,35 @@ def profile(request, username):
         image_data_base64 = base64.b64encode(trainercard.fav_pokemon.sprite.image).decode('utf-8')
         trainercard.fav_pokemon.sprite.image_data_base64 = image_data_base64
     except TrainerCard.DoesNotExist:
-         return HttpResponse("TrainerCard not found for profile user", status=404)
+        return HttpResponse("TrainerCard not found for profile user", status=404)
     if request.method == "POST":
-        print("post")
-        print(request.POST)
-        fav_pok_form = Fav_pok_form(request.POST)
-        profile_pic_form = Profile_pic_form(request.POST, request.FILES)
-        if "fav_pok_form" in request.POST and fav_pok_form.is_valid():
-            print("favPokvalid")
-            trainercard = TrainerCard.objects.get(user=profile)
-            trainercard.fav_pokemon = fav_pok_form.get['fav_pokemon']
-            trainercard.save()
-        elif "profile_pic_form" in request.POST and profile_pic_form.is_valid():
-            print("valid")
-            trainercard = TrainerCard.objects.get(user=profile)
-            trainercard.profile_pic.delete(save=True)
-            trainercard.profile_pic = profile_pic_form.cleaned_data['profile_pic']
-            trainercard.save()
 
-        else:
-            #TODO: Form is invalid, render the registration form with errors
+        if "fav_pok" in request.POST:
+            fav_pok_form = Fav_pok_form(request.POST)
+            if fav_pok_form.is_valid():
+                print("favPokvalid")
+                trainercard = TrainerCard.objects.get(user=profile)
+                fav_pok_id = fav_pok_form.cleaned_data['fav_pok']
+                fav_pok = Pokemon.objects.get(id=fav_pok_id)
+                trainercard.fav_pokemon = fav_pok
+                print(fav_pok.get_name)
+                # Encode the sprite image as base64 and save it
+                image_data_base64 = base64.b64encode(fav_pok.sprite.image).decode('utf-8')
+                fav_pok.sprite.image_data_base64 = image_data_base64
+                trainercard.fav_pokemon.sprite.image_data_base64 = image_data_base64
+                trainercard.save()
+        elif "profile_pic" in request.FILES:
+            profile_pic_form = Profile_pic_form(request.POST, request.FILES)
+            if profile_pic_form.is_valid():
+                uploaded_image = profile_pic_form.cleaned_data['profile_pic']
+                trainercard = TrainerCard.objects.get(user=profile)
+                trainercard.profile_pic.delete(save=True)
+                trainercard.profile_pic = uploaded_image
+                trainercard.save()
+    else:
+        fav_pok_form = Fav_pok_form()
+        profile_pic_form = Profile_pic_form()
 
-            fav_pok_form = Fav_pok_form()
-            profile_pic_form = Profile_pic_form()
-
-
-
-    context = {"trainercard": trainercard, "is_owner": is_owner,'fav_pok_form': fav_pok_form,"profile_pic_form":profile_pic_form}
-    return render(request, "users/profile.html", context,)
+    context = {"trainercard": trainercard, "is_owner": is_owner, 'fav_pok_form': fav_pok_form,
+               "profile_pic_form": profile_pic_form}
+    return render(request, "users/profile.html", context, )

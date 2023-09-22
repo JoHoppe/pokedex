@@ -1,29 +1,30 @@
+import os
+
+import PIL
+from PIL import Image
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
 from django.db import models
-
+from trainercard.validator import validate_file_size
 from pokedexapp.models import Pokemon
 
+from PIL import Image
+import io
+
+
+def default_profile_pic():
+    # Create a white 360x360 image
+    image = Image.new('RGB', (360, 360), color='white')
+    return image
 
 
 class TrainerCard(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    #blank,so no input required in form
-    #TODO:set Default
-    profile_pic = models.ImageField(null=True,blank=True,upload_to="profilepics",default="trainercard/tumblr_55f33cae2319637ab726ab747bbef829_cd7b3a49_1280.png")
+    profile_pic = models.ImageField(null=True, blank=True
+                                    , upload_to="profilepics"
+                                    ,validators=[validate_file_size])
+
     fav_pokemon = models.ForeignKey(Pokemon, on_delete=models.SET_NULL, null=True, default=1)
-
-
-    def set_fav_pokemon(self, new_fav_pokemon):
-        self.fav_pokemon = new_fav_pokemon
-        self.save()
 
     def __str__(self):
         return self.user.username
-    def set_profile_pic(self,new_profile_pic):
-        self.profile_pic=new_profile_pic
-        self.save()
-
-    def get_profile_pic(self):
-        return self.profile_pic
-        #TODO: implement set profile pic

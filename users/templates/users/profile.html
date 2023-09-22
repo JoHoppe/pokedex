@@ -9,61 +9,106 @@
 
 <body>
 {% block content %}
-
-{% if is_owner %}
-    <form action="{% url 'users:profile' username=trainercard.user.username %}" class="box" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label class="label"><i class="favorite_pokemon"></i>Set your favorite Pokemon</label>
-        <div class="control">
-            {{fav_pok_form}}
-        </div>
-        <div class="field">
-            <div class="control">
-                <button class="button is-danger" type="fav_pok_submit"><i class="Set_fav_pok_button"></i>Submit</button>
+<div class="tile is-ancestor">
+    <div class="tile is-vertical is-7 notification is-danger">
+        <!-- Profile Picture and Trainer Card Title -->
+        <div class="tile is-parent is-vertical is-flex">
+            <div class="tile is-child is-flex is-align-items-center">
+                <figure class="image is-128x128">
+                    {% if trainercard.profile_pic%}
+                    <img src="{{ trainercard.profile_pic.url|safe }}" alt="Profile Picture">
+                    {%else%}
+                    {%load static%}
+                    <img src="{% static 'defaultProfilepic/avatar-7964945_640.png' %}">
+                    {%endif%}
+                </figure>
+                <div>
+                    <p class="title is-4 mt-0" style="margin-left: 0.5em;">Trainer Card of User</p>
+                </div>
             </div>
         </div>
-    </form>
-    {% if profile_form.errors %}
-    <div class="field mt-4">
-        <div class="box has-background-danger">
-            <p class="help is-danger">
-                {% for field, errors in profile_form.errors.items %}
-            <ul class="mb-4">
-                {% for error in errors %}
-                <li class="is-danger">{{ error }}</li>
-                {% endfor %}
-            </ul>
-            {% endfor %}
-            </p>
+        <!-- Separation Line -->
+        <div class="tile is-child">
+            <hr>
+        </div>
+        <!-- Favorite Pokemon Section -->
+        <div class="tile is-child">
+            <p class="is-capitalized">Favorite Pokemon is: {{ trainercard.fav_pokemon.name|upper }}</p>
+        </div>
+        <!-- Pokemon Sprite -->
+        <div class="tile is-child">
+            <figure class="image is-128x128">
+                <img src="data:image/png;base64,{{ trainercard.fav_pokemon.sprite.image_data_base64 }}"
+                     alt="Pokemon Sprite">
+            </figure>
+        </div>
+        <!-- Hall of Fame Team Section -->
+        <div class="tile is-child">
+            <hr>
+        </div>
+        <div class="tile is-child">
+            <p>Hall of Fame Team:</p>
         </div>
     </div>
 
+    <div class="tile is-1"></div>
 
+    {% if is_owner %}
+    <div class="tile is-vertical is-4 notification is-gray">
+        <p>Edit Your Trainercard:</p>
+        <form action="{% url 'users:profile' username=trainercard.user.username %}" method="POST"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="field">
+                <label class="label"><i class="favorite_pokemon"></i>Set your Profile Picture</label>
+                <div class="control">
+                    {{ profile_pic_form }}
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button class="button is-danger" type="submit"><i class="Set_profile_pic_button"></i>Submit</button>
+                </div>
+            </div>
+        </form>
 
-    {% endif %}
-{% endif %}
+        <form action="{% url 'users:profile' username=trainercard.user.username %}" method="POST"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="field">
+                <label class="label"><i class="favorite_pokemon"></i>Set your favorite Pokemon</label>
+                <div class="control">
+                    {{ fav_pok_form }}
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button class="button is-danger" type="submit"><i class="Set_fav_pok_button"></i>Submit</button>
+                </div>
+            </div>
+        </form>
 
-
-{{is_owner}}
-{{user.username}}
-{{trainercard.fav_pokemon.name}}
-{{trainercard.profile_pic}}
-<form action="{% url 'users:profile' username=trainercard.user.username %}"
-      class="box" method="POST"enctype="multipart/form-data">
-        {% csrf_token %}
-        <label class="label"><i class="favorite_pokemon"></i>Set your Profile Picture</label>
-        <div class="control">
-            {{profile_pic_form}}
-        </div>
-        <div class="field">
-            <div class="control">
-                <button class="button is-danger" type="profile_pic_submit"><i class="Set_profile_pic_button"></i>Submit</button>
+        {% if profile_form.errors %}
+        <div class="field mt-4">
+            <div class="box has-background-danger">
+                <p class="help is-danger">
+                    {% for field, errors in profile_form.errors.items %}
+                <ul class="mb-4">
+                    {% for error in errors %}
+                    <li class="is-danger">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endfor %}
+                </p>
             </div>
         </div>
-</form>
-<img  src="{{trainercard.profile_pic.url|safe}}" height="128" width="128">
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+</div>
 
-<img alt="Pokemon Sprite" src="data:image/png;base64,{{ trainercard.fav_pokemon.sprite.image_data_base64 }}">
+
 </body>
 {% endblock content %}
 </html>
