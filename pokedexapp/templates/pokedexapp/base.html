@@ -10,9 +10,18 @@
     {% load static %}
     <link href="{% static 'css/my_styles.css' %}" rel="stylesheet">
 </head>
-<body class="has-navbar-fixed-top">
-<nav aria-label="main navigation" class="navbar is-fixed-top" role="navigation">
-    <div id="navbar-menu" class="navbar-menu">
+<body class="has-navbar-fixed-top" style="overflow: auto;
+    max-width: 100%;display: flex;
+    flex-grow: 1;
+    flex-shrink: 0;
+    padding: 0;">
+<nav aria-label="main navigation" class="navbar is-fixed-top" role="navigation" style="overflow: auto;
+    max-width: 100%;">
+    <div id="navbar-menu" class="navbar-menu" style="overflow-x: auto;
+    max-width: 100%;  width: 80% display: flex;
+    flex-grow: 1;
+    flex-shrink: 0;
+    padding: 0;">
         <div class="navbar-start">
             <div class="navbar-item">
                 <a href="{% url 'pokedexapp:index' %}">
@@ -48,9 +57,11 @@
                     </div>
                     <div class="dropdown-menu" id="dropdown-menu" role="menu" style="position: absolute; top: 65%;">
 
-                            <a class="box" style="margin-bottom: 0.1rem; padding: 1rem;margin-right:0.05rem" href="{% url 'users:profile' user.username %}">My Profile</a>
+                        <a class="box" style="margin-bottom: 0.1rem; padding: 1rem;margin-right:0.05rem"
+                           href="{% url 'users:profile' user.username %}">My Profile</a>
 
-                            <a class="box" style="margin-bottom: 0.1rem; padding: 1rem;margin-right:0.05rem" href="{% url 'users:logout' %}">Logout</a>
+                        <a class="box" style="margin-bottom: 0.1rem; padding: 1rem;margin-right:0.05rem"
+                           href="{% url 'users:logout' %}">Logout</a>
 
                     </div>
                 </div>
@@ -110,7 +121,7 @@
     </div>
 </nav>
 
-<div class="container"style="margin-top: 3%;">
+<div class="container" style="margin-top: 0%;">
     {% block content %}{% endblock content %}
 </div>
 
