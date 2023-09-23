@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<div>
 
 {% extends "pokedexapp/base.html" %}
 {% block content %}
-<div class="column is-6">
+<div class="columns is-multiline">
+    <div class="column is-6">
         <div class="card">
             <a href="{% url 'pokedexapp:show_one_pokemon' pokemon.id %}" class="card-content">
                 <!-- Pokémon Details -->
@@ -22,7 +22,7 @@
                 <div class="card-image">
                     <!-- Pokémon Image -->
                     {% if pokemon.sprite and pokemon.sprite.image_data_base64 %}
-                    <img src="data:image/png;base64,{{ pokemon.sprite.image_data_base64 }}" alt="Pokemon Sprite">
+                    <img src="data:image/png;base64,{{ pokemon.sprite.image_data_base64 }}" alt="{{ pokemon.name }}">
                     {% else %}
                     <p>No sprite available.</p>
                     {% endif %}
@@ -30,39 +30,75 @@
             </a>
         </div>
     </div>
-</div>
 
-<div class="columns">
-    <div class="column is-3">
-        <div class="card">
-            <a href="{% url 'pokedexapp:show_one_pokemon' prev_pokemon.id%}">
-                <div class="np_poke-title">
-                    Previous Pokemon: {{ prev_pokemon.name }}
+    <div class="column is-6">
+        <div class="columns is-vcentered">
+            <div class="column">
+                <div class="card">
+                    <a href="{% url 'pokedexapp:show_one_pokemon' prev_pokemon.id%}" class="card-content">
+                        <div class="np_poke-title">
+                            Previous Pokemon
+                        </div>
+                        <div class="card-image">
+                            {% if prev_pokemon.sprite.image_data_base64 %}
+                            <img src="data:image/png;base64,{{ prev_pokemon.sprite.image_data_base64 }}" alt="{{ prev_pokemon.name }}">
+                            {% endif %}
+                        </div>
+                    </a>
                 </div>
-                <div class="card-image">
-                    {% if prev_pokemon.sprite.image_data_base64 %}
-                    <img src="data:image/png;base64,{{ prev_pokemon.sprite.image_data_base64 }}">
-                    {% endif %}
+            </div>
+            <div class="column">
+                <div class="card">
+                    <a href="{% url 'pokedexapp:show_one_pokemon' next_pokemon.id %}" class="card-content">
+                        <div class="np_poke-title">
+                            Next Pokemon
+                        </div>
+                        <div class="card-image">
+                            {% if next_pokemon.sprite.image_data_base64 %}
+                            <img src="data:image/png;base64,{{ next_pokemon.sprite.image_data_base64 }}" alt="{{ next_pokemon.name }}">
+                            {% endif %}
+                        </div>
+                    </a>
                 </div>
-            </a>
+            </div>
         </div>
     </div>
-    <div class="column is-3">
-        <div class="card">
-            <a href="{% url 'pokedexapp:show_one_pokemon' next_pokemon.id %}">
-                <div class="np_poke-title">
-                    Next Pokemon: {{ next_pokemon.name }}
-                </div>
-                <div class="card-image">
-                    {% if next_pokemon.sprite.image_data_base64 %}
-                    <img src="data:image/png;base64,{{ next_pokemon.sprite.image_data_base64 }}">
-                    {% endif %}
-                </div>
-            </a>
-        </div>
-    </div>
-
-
 </div>
+
+<style>
+    /* Add this CSS for cohesive design */
+    .columns.is-multiline {
+        margin-top: 20px;
+    }
+
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-content {
+        text-decoration: none;
+        color: #333;
+    }
+
+    .poke_title {
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .tags .tag {
+        margin-right: 5px;
+    }
+
+    .type-badge {
+        padding: 2px 8px;
+    }
+
+    .card-image img {
+        max-width: 100%;
+        height: auto;
+    }
+</style>
+
 {% endblock content %}
-

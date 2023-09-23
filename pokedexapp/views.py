@@ -60,8 +60,7 @@ def show_one_pokemon(request, id):
     next_pokemon = get_object_or_404(Pokemon, id=next_id)
 
     # Encode the image data of the sprite to base64
-    image_data_base64 = base64.b64encode(pokemon.sprite.image).decode('utf-8')
-    pokemon.sprite.image_data_base64 = image_data_base64
+    encode_poke_sprite(pokemon)
 
     prev_pokemon.sprite.image_data_base64 = base64.b64encode(prev_pokemon.sprite.image).decode('utf-8')
     next_pokemon.sprite.image_data_base64 = base64.b64encode(next_pokemon.sprite.image).decode('utf-8')
@@ -77,6 +76,11 @@ def show_one_pokemon(request, id):
     return render(request, "pokedexapp/pokemon.html", context)
 
 
+def encode_poke_sprite(pokemon):
+    image_data_base64 = base64.b64encode(pokemon.sprite.image).decode('utf-8')
+    pokemon.sprite.image_data_base64 = image_data_base64
+
+
 def search(request):
     query = request.GET.get("q")
     # Check if input was a number,
@@ -89,8 +93,7 @@ def search(request):
             return render(request,"pokedexapp/404.html")
         else:
             for pokemon in pokemons:
-                image_data_base64 = base64.b64encode(pokemon.sprite.image).decode('utf-8')
-                pokemon.sprite.image_data_base64 = image_data_base64
+                encode_poke_sprite(pokemon)
 
             context = {"pokemons": pokemons}
 
@@ -102,9 +105,7 @@ def search(request):
         # If there are results, we return them; otherwise, we render the 404 page
         if len(pokemons) >= 1:
             for pokemon in pokemons:
-                image_data_base64 = base64.b64encode(pokemon.sprite.image).decode('utf-8')
-                pokemon.sprite.image_data_base64 = image_data_base64
-
+                encode_poke_sprite(pokemon)
             context = {"pokemons": pokemons}
             return render(request, "pokedexapp/search.html", context)
         else:
