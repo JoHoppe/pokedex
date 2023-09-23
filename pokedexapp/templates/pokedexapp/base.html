@@ -10,18 +10,9 @@
     {% load static %}
     <link href="{% static 'css/my_styles.css' %}" rel="stylesheet">
 </head>
-<body class="has-navbar-fixed-top" style="overflow: auto;
-    max-width: 100%;display: flex;
-    flex-grow: 1;
-    flex-shrink: 0;
-    padding: 0;">
-<nav aria-label="main navigation" class="navbar is-fixed-top" role="navigation" style="overflow: auto;
-    max-width: 100%;">
-    <div id="navbar-menu" class="navbar-menu" style="overflow-x: auto;
-    max-width: 100%;  width: 80% display: flex;
-    flex-grow: 1;
-    flex-shrink: 0;
-    padding: 0;">
+<body class="has-navbar-fixed-top" ">
+<nav aria-label="main navigation" class="navbar is-fixed-top" role="navigation" >
+    <div id="navbar-menu" class="navbar-menu" ">
         <div class="navbar-start">
             <div class="navbar-item">
                 <a href="{% url 'pokedexapp:index' %}">
@@ -40,6 +31,7 @@
                     </div>
                 </form>
             </div>
+
         </div>
         <div class="navbar-end">
             {% if user.is_authenticated %}
@@ -121,7 +113,7 @@
     </div>
 </nav>
 
-<div class="container" style="margin-top: 0%;">
+<div class="container" style="margin-top: 3%;">
     {% block content %}{% endblock content %}
 </div>
 

@@ -153,3 +153,7 @@ def profile(request, username):
     context = {"trainercard": trainercard, "is_owner": is_owner, 'fav_pok_form': fav_pok_form,
                "profile_pic_form": profile_pic_form}
     return render(request, "users/profile.html", context, )
+
+def searchProfile(request):
+    pass
+
