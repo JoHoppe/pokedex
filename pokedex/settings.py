@@ -72,6 +72,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'pokedexapp.custom_context_processors.custom_forms',
+                'pokedexapp.custom_context_processors.context_trainer_card',
             ],
         },
     },

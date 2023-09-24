@@ -10,9 +10,9 @@
     {% load static %}
     <link href="{% static 'css/my_styles.css' %}" rel="stylesheet">
 </head>
-<body class="has-navbar-fixed-top" style="overflow-y: scroll">
-<nav aria-label="main navigation" class="navbar is-fixed-top" role="navigation" style="overflow-y: scroll" >
-    <div id="navbar-menu" class="navbar-menu">
+<body class="has-navbar-fixed-top">
+<nav aria-label="main navigation" class="navbar is-fixed-top" role="navigation">
+    <div class="navbar-menu" id="navbar-menu">
         <div class="navbar-start">
             <div class="navbar-item">
                 <a href="{% url 'pokedexapp:index' %}">
@@ -38,22 +38,34 @@
             <div class="navbar-item has-dropdown -trigger">
                 <div class="dropdown is-right">
                     <div class="dropdown-trigger">
-                        <button class="button is-grey dropdown-button" aria-haspopup="true"
-                                aria-controls="dropdown-menu"
+                        <button aria-controls="dropdown-menu" aria-haspopup="true"
+                                class="button is-grey dropdown-button"
                                 onclick="this.parentNode.parentNode.classList.toggle('is-active')">
-                            <span>{{ user.username }}</span>
-                            <span class="icon is-small">
+                            <span>{{ user.username }}
+
+                            </span>
+                            <span class="">
                                 <i aria-hidden="true" class="fas fa-angle-down"></i>
                             </span>
                         </button>
                     </div>
                     <div class="dropdown-menu" id="dropdown-menu" role="menu" style="position: absolute; top: 65%;">
 
-                        <a class="box" style="margin-bottom: 0.1rem; padding: 1rem;margin-right:0.05rem"
-                           href="{% url 'users:profile' user.username %}">My Profile</a>
+                        <a class="box" href="{% url 'users:profile' user.username %}"
+                           style="margin-bottom: 0.1rem; padding: 1rem; margin-right: 0.05rem">
+                            <i class="fas fa-user"></i> My Profile
+                        </a>
 
-                        <a class="box" style="margin-bottom: 0.1rem; padding: 1rem;margin-right:0.05rem"
-                           href="{% url 'users:logout' %}">Logout</a>
+                        <a class="box" href="{% url 'users:search_Profile' %}"
+                           style="margin-bottom: 0.1rem; padding: 1rem; margin-right: 0.05rem">
+                            <i class="fas fa-search"></i> WIP: Search profiles
+                        </a>
+
+                        <a class="box" href="{% url 'users:logout' %}"
+                           style="margin-bottom: 0.1rem; padding: 1rem; margin-right: 0.05rem">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+
 
                     </div>
                 </div>
@@ -62,8 +74,8 @@
             <div class="navbar-item">
                 <div class="dropdown is-right">
                     <div class="dropdown-trigger">
-                        <button class="button is-grey dropdown-button" aria-haspopup="true"
-                                aria-controls="dropdown-login"
+                        <button aria-controls="dropdown-login" aria-haspopup="true"
+                                class="button is-grey dropdown-button"
                                 onclick="this.parentNode.parentNode.classList.toggle('is-active')">
                             <span>Login</span>
                             <span class="icon is-small">
