@@ -10,9 +10,9 @@
     {% load static %}
     <link href="{% static 'css/my_styles.css' %}" rel="stylesheet">
 </head>
-<body class="has-navbar-fixed-top" ">
-<nav aria-label="main navigation" class="navbar is-fixed-top" role="navigation" >
-    <div id="navbar-menu" class="navbar-menu" ">
+<body class="has-navbar-fixed-top" style="overflow-y: scroll">
+<nav aria-label="main navigation" class="navbar is-fixed-top" role="navigation" style="overflow-y: scroll" >
+    <div id="navbar-menu" class="navbar-menu">
         <div class="navbar-start">
             <div class="navbar-item">
                 <a href="{% url 'pokedexapp:index' %}">
