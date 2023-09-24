@@ -83,6 +83,9 @@ def encode_poke_sprite(pokemon):
 
 def search(request):
     query = request.GET.get("q")
+    if not query:
+        # Handle the case where 'q' parameter is empty or not provided
+        return render(request, "pokedexapp/404.html")
     # Check if input was a number,
     try:
         query = int(query)
@@ -99,7 +102,7 @@ def search(request):
 
             return render(request, "pokedexapp/search.html", context)
 
-    except ValueError:
+    except (ValueError,TypeError):
         q_pokemons = Pokemon.objects.filter(name__contains=query)
         pokemons = list(q_pokemons)
         # If there are results, we return them; otherwise, we render the 404 page
