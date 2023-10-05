@@ -154,12 +154,10 @@ def searchProfile(request):
     query = request.GET.get("q")
     if not query:
         # Handle the case where 'q' parameter is empty or not provided
-        return render(request, "pokedexapp/404.html")
-
+        context= {}
+        return render(request, "users/search_profile.html",)
     else:
         q_users=User.objects.filter(username__contains=query)
-        if len(q_users)<1:
-            return render(request, "pokedexapp/404.html")
-
+        print(q_users)
         context = {"users":q_users}
         return render(request, "users/search_profile.html", context,)

@@ -6,26 +6,38 @@
 {% block content %}
 
 <div class="columns is-multiline has-background-grey">
-
-    <div class="column is-4">
-        <div class="card">
-            <a>
-                <!-- Pokémon Details -->
-                <p class="poke_title"></p>
-                <!-- Pokémon Types -->
-                <div class="card-footer">
-                    <div class="tags">
-
-
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="card-image">
-
-                </div>
-            </a>
+    <form action="{% url 'users:search_Profile' %}" method="GET">
+        <div class="field has-addons">
+            <div class="control">
+                <input class="input is-danger" name="q" placeholder="Search users" type="text">
+            </div>
+            <div class="control">
+                <button class="button is-danger" type="Search">Search</button>
+            </div>
         </div>
+    </form>
+    {%if q_users
+    %}
+    <div class="column is-4">
+        <p>test</p>
+        {%for user in q_user%}
+        <p>{{user}}t</p>
+        <div class="card">
+            <!-- Pokémon Details -->
+            <p class="Username">{{user.username}}</p>
+            <!-- Pokémon Types -->
+            <div class="card-footer">
+                <div class="tags">
+
+
+                </div>
+            </div>
+            <div class="card-image">
+
+            </div>
+        </div>
+        {%endfor%}
     </div>
-    {% endfor %}
+    {%endif%}
 </div>
 {% endblock %}
