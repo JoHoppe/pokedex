@@ -1,43 +1,45 @@
-<!DOCTYPE Html>
+<!DOCTYPE html>
 <html>
-
 {% extends 'pokedexapp/base.html' %}
 
 {% block content %}
-
-<div class="columns is-multiline has-background-grey">
+<div class="field is-grouped is-grouped-centered">
     <form action="{% url 'users:search_Profile' %}" method="GET">
         <div class="field has-addons">
             <div class="control">
-                <input class="input is-danger" name="q" placeholder="Search users" type="text">
+                <input class="input is-primary" name="q" placeholder="Search users" style="width: 300px;" type="text">
             </div>
             <div class="control">
-                <button class="button is-danger" type="Search">Search</button>
+                <button class="button is-primary" type="submit">Search</button>
             </div>
         </div>
     </form>
-    {%if q_users
-    %}
+</div>
+
+{% if q_users %}
+<div class="columns is-multiline">
+    {% for trainer in q_users %}
     <div class="column is-4">
-        <p>test</p>
-        {%for user in q_user%}
-        <p>{{user}}t</p>
         <div class="card">
-            <!-- Pokémon Details -->
-            <p class="Username">{{user.username}}</p>
-            <!-- Pokémon Types -->
-            <div class="card-footer">
-                <div class="tags">
-
-
+            <!-- User Details -->
+            <div class="tile is-child is-flex is-align-items-center">
+                <figure class="image is-128x128">
+                    {% if trainercard.profile_pic %}
+                    <img alt="Error loading your Profile Picture" src="{{ trainer.profile_pic.url|safe }}"
+                         style="max-width: 128px; max-height: 128px; border-radius: 100%;">
+                    {% else %}
+                    {% load static %}
+                    <img height="128" src="{% static 'defaultProfilepic/avatar-7964945_640.png' %}" width="128">
+                    {% endif %}
+                </figure>
+                <div class="content">
+                    <p class="title is-4 mt-0">Trainer Card of {{ trainer.user.username }}</p>
                 </div>
             </div>
-            <div class="card-image">
-
-            </div>
         </div>
-        {%endfor%}
     </div>
-    {%endif%}
+    {% endfor %}
 </div>
+{% endif %}
 {% endblock %}
+</html>

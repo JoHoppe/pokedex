@@ -157,7 +157,6 @@ def searchProfile(request):
         context= {}
         return render(request, "users/search_profile.html",)
     else:
-        q_users=User.objects.filter(username__contains=query)
-        print(q_users)
-        context = {"users":q_users}
+        q_users=TrainerCard.objects.filter(user__username__contains=query)
+        context = {"q_users":q_users}
         return render(request, "users/search_profile.html", context,)
