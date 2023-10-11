@@ -1,27 +1,20 @@
 import base64
-import os
 
-from django.core.files.storage import FileSystemStorage
-from django.db import IntegrityError
-from pokedex import settings
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 # we use djangos built in user model, has everythin we need
 from django.contrib.auth.views import LogoutView
-from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.core.files.uploadedfile import TemporaryUploadedFile
-from PIL import Image
-import io
 
 from pokedexapp.models import Pokemon
+from trainercard.forms.fav_pok_form import Fav_pok_form
 from trainercard.forms.profile_pic_form import Profile_pic_form
 from trainercard.models import TrainerCard
 from .forms.log_reg_form import LoginForm, RegisterForm
-from trainercard.forms.fav_pok_form import Fav_pok_form
 
 
 # Create your views here.
@@ -152,8 +145,18 @@ def profile(request, username):
 
     context = {"trainercard": trainercard, "is_owner": is_owner, 'fav_pok_form': fav_pok_form,
                "profile_pic_form": profile_pic_form}
-    return render(request, "users/profile.html", context, )
 
+    return render(request, "users/profile.html", context)
+
+
+@login_required()
 def searchProfile(request):
-    pass
-
+    query = request.GET.get("q")
+    if not query:
+        # Handle the case where 'q' parameter is empty or not provided
+        context= {}
+        return render(request, "users/search_profile.html",)
+    else:
+        q_users=TrainerCard.objects.filter(user__username__contains=query)
+        context = {"q_users":q_users}
+        return render(request, "users/search_profile.html", context,)

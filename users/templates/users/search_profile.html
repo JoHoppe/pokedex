@@ -1,38 +1,45 @@
-<!DOCTYPE Html>
+<!DOCTYPE html>
 <html>
-
 {% extends 'pokedexapp/base.html' %}
 
 {% block content %}
+<div class="field is-grouped is-grouped-centered">
+    <form action="{% url 'users:search_Profile' %}" method="GET">
+        <div class="field has-addons">
+            <div class="control">
+                <input class="input is-primary" name="q" placeholder="Search users" style="width: 300px;" type="text">
+            </div>
+            <div class="control">
+                <button class="button is-primary" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
 
-<div class="columns is-multiline has-background-grey">
-    {% for pokemon in pokemons %}
+{% if q_users %}
+<div class="columns is-multiline">
+    {% for trainer in q_users %}
     <div class="column is-4">
         <div class="card">
-            <a class="card-content" href="{% url 'pokedexapp:show_one_pokemon' pokemon.id %}">
-                <!-- Pokémon Details -->
-                <p class="poke_title">{{ pokemon.id }}: {{ pokemon.name }}</p>
-                <!-- Pokémon Types -->
-                <div class="card-footer">
-                    <div class="tags">
-                        {% for css_type in pokemon.type_name %}
-                        <span class="tag is-rounded type-badge type-{{ css_type|lower }}">
-                            {{ css_type }}
-                        </span>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="card-image">
-                    <!-- Pokémon Image -->
-                    {% if pokemon.sprite and pokemon.sprite.image_data_base64 %}
-                    <img alt="Pokemon Sprite" src="data:image/png;base64,{{ pokemon.sprite.image_data_base64 }}">
+            <!-- User Details -->
+            <div class="tile is-child is-flex is-align-items-center">
+                <figure class="image is-128x128">
+                    {% if trainercard.profile_pic %}
+                    <img alt="Error loading your Profile Picture" src="{{ trainer.profile_pic.url|safe }}"
+                         style="max-width: 128px; max-height: 128px; border-radius: 100%;">
                     {% else %}
-                    <p>No sprite available.</p>
+                    {% load static %}
+                    <img height="128" src="{% static 'defaultProfilepic/avatar-7964945_640.png' %}" width="128">
                     {% endif %}
+                </figure>
+                <div class="content">
+                    <p class="title is-4 mt-0">Trainer Card of {{ trainer.user.username }}</p>
                 </div>
-            </a>
+            </div>
         </div>
     </div>
     {% endfor %}
 </div>
+{% endif %}
 {% endblock %}
+</html>
