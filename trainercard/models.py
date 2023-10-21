@@ -18,8 +18,8 @@ def default_profile_pic():
     return image
 
 
-class PokeTeam(models.Model,):
-    team_name=models.CharField(unique=True,max_length=15,default="My first Team")
+class PokeTeam(models.Model):
+    team_name = models.CharField(max_length=15,null=False,)
     pok_1 = models.ForeignKey(Pokemon, on_delete=models.SET_NULL, null=True, related_name="pok_1")
     pok_2 = models.ForeignKey(Pokemon, on_delete=models.SET_NULL, null=True, related_name="pok_2")
     pok_3 = models.ForeignKey(Pokemon, on_delete=models.SET_NULL, null=True, related_name="pok_3")
@@ -35,14 +35,9 @@ class TrainerCard(models.Model):
                                     validators=[validate_file_size])
 
     fav_pokemon = models.ForeignKey(Pokemon, on_delete=models.SET_NULL, null=True, default=1)
-    poke_teams = models.ManyToManyField(PokeTeam,)
-
-    def save(self, *args, **kwargs):
-        # Ensure the poke_teams field is up-to-date before saving
-        if not self.poke_teams.filter(id=self.poke_teams.id).exists():
-            self.poke_teams.add(self.poke_teams)
-        super().save(*args, **kwargs)
-
+    poke_team = models.OneToOneField(PokeTeam,on_delete=models.CASCADE,default=None,null=True)
+    def __init__(self):
+        self.poke_team=PokeTeam(f""+self.user+ "'s Team")
     def __str__(self):
         return self.user.username
 
