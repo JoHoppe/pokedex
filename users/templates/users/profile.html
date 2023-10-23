@@ -7,17 +7,6 @@
 </head>
 <body>
 {% block content %}
-<div>
-    {%for i in range(n)%}
-            <figure class="image is-128x128">
-                <img src="data:image/png;base64,{{trainercard.poketeam.pok_{{i}}.sprite.image_data_base64 }}"
-                     alt="Pokemon Sprite">
-            </figure>
-        </div>
-    {%end for%}
-</div>
-
-
 <div class="tile is-ancestor is-flex">
     <div class="tile is-vertical is-7 notification is-danger" style="border-radius: 2em;">
         <!-- Profile Picture and Trainer Card Title -->
