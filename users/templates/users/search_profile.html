@@ -21,21 +21,23 @@
     {% for trainer in q_users %}
     <div class="column is-4">
         <div class="card">
-            <!-- User Details -->
-            <div class="tile is-child is-flex is-align-items-center">
-                <figure class="image is-128x128">
-                    {% if trainercard.profile_pic %}
-                    <img alt="Error loading your Profile Picture" src="{{ trainer.profile_pic.url|safe }}"
-                         style="max-width: 128px; max-height: 128px; border-radius: 100%;">
-                    {% else %}
-                    {% load static %}
-                    <img height="128" src="{% static 'defaultProfilepic/avatar-7964945_640.png' %}" width="128">
-                    {% endif %}
-                </figure>
-                <div class="content">
-                    <p class="title is-4 mt-0">Trainer Card of {{ trainer.user.username }}</p>
+            <a href="{% url 'users:profile' trainer.user.username %}">
+                <!-- User Details -->
+                <div class="tile is-child is-flex is-align-items-center">
+                    <figure class="image is-128x128">
+                        {% if trainercard.profile_pic %}
+                        <img alt="Error loading your Profile Picture" src="{{ trainer.profile_pic.url|safe }}"
+                             style="max-width: 128px; max-height: 128px; border-radius: 100%;">
+                        {% else %}
+                        {% load static %}
+                        <img height="128" src="{% static 'defaultProfilepic/avatar-7964945_640.png' %}" width="128">
+                        {% endif %}
+                    </figure>
+                    <div class="content">
+                        <p class="title is-4 mt-0">Trainer Card of {{ trainer.user.username }}</p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
     {% endfor %}
