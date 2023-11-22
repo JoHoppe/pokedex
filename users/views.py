@@ -13,7 +13,7 @@ from django.urls import reverse_lazy
 from pokedexapp.models import Pokemon
 from trainercard.forms.fav_pok_form import Fav_pok_form
 from trainercard.forms.profile_pic_form import Profile_pic_form
-from trainercard.models import TrainerCard
+from trainercard.models import TrainerCard,PokeTeam
 from .forms.log_reg_form import LoginForm, RegisterForm
 
 
@@ -64,6 +64,7 @@ def custom_register(request):
                 # Create the user
                 user = User.objects.create_user(username=username, email=email, password=password)
                 trainercard = TrainerCard.objects.create(user=user)
+                trainercard.poke_teams=PokeTeam.objects.create(trainercard=trainercard)
 
                 # Redirect to a success page or custom_login page
                 return redirect('users:login')
